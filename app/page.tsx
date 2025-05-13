@@ -17,6 +17,7 @@ import { XIcon } from "lucide-react";
 import { Article, sampleArticles } from "@/data/article";
 import { PaginationControls } from "@/components/pagination-controls";
 import { ArticleCard } from "@/components/article-card";
+import { ThemeToggle } from "@/components/theme";
 
 // ... (BooleanFilterKey and booleanFilterOptions remain the same) ...
 type BooleanFilterKey =
@@ -122,10 +123,11 @@ export default function HomePage() {
 
   return (
     <div className="container mx-auto p-4 md:p-8">
-      <header className="mb-8 pb-4 border-b">
+      <header className="mb-8 pb-4 border-b flex justify-between">
         <h1 className="text-3xl font-bold text-left text-primary">
           FedEx Media Presence Tracker
         </h1>
+        <ThemeToggle />
       </header>
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
