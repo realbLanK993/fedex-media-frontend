@@ -41,7 +41,7 @@ const booleanFilterOptions: { key: BooleanFilterKey; label: string }[] = [
 const ITEMS_PER_PAGE = 10;
 
 export default function HomePage() {
-  const [articles, setArticles] = useState<Article[]>(sampleArticles);
+  const [articles] = useState<Article[]>(sampleArticles);
   const [searchTerm, setSearchTerm] = useState("");
   // Initialize with empty string for "All"
   const [selectedCountry, setSelectedCountry] = useState<string>("");

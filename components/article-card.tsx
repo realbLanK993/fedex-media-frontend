@@ -1,5 +1,5 @@
 // components/ArticleCard.tsx
-import { Article } from "@/data/articles"; // Adjust path if src directory is used
+
 import {
   Card,
   CardContent,
@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
+import { Article } from "@/data/article";
 
 interface ArticleCardProps {
   article: Article;
