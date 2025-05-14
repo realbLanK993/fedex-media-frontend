@@ -18,6 +18,8 @@ import { Article, sampleArticles } from "@/data/article";
 import { PaginationControls } from "@/components/pagination-controls";
 import { ArticleCard } from "@/components/article-card";
 import { ThemeToggle } from "@/components/theme";
+import { downloadJsonAsCsv } from "@/lib/utils";
+import { SoVDataItem, SoVDisplay } from "@/components/sov-display";
 
 // ... (BooleanFilterKey and booleanFilterOptions remain the same) ...
 type BooleanFilterKey =
@@ -40,7 +42,7 @@ const booleanFilterOptions: { key: BooleanFilterKey; label: string }[] = [
 ];
 
 const ITEMS_PER_PAGE = 10;
-
+const TARGET_COMPANY_NAME = "Fedex";
 export default function HomePage() {
   const [articles] = useState<Article[]>(sampleArticles);
   const [searchTerm, setSearchTerm] = useState("");
@@ -62,6 +64,41 @@ export default function HomePage() {
     return Array.from(sentiments).sort();
   }, [articles]);
 
+  const handleDownloadCsv = () => {
+    // You can choose to download all articles or just the filtered ones
+    // For filtered articles:
+    if (filteredArticles.length > 0) {
+      // Example: Define custom headers if you want a specific order or naming
+      const customHeaders = [
+        "headline",
+        "outlet",
+        "date",
+        "country",
+        "sentiment",
+        "summary",
+        "keyword",
+        "financial_performance", // These will be 0 or 1
+        "innovation",
+        "regulatory",
+        "environment_responsibility",
+        "social_responsibility",
+        "community_responsibility",
+        "e_commerce",
+        "hyperlink",
+      ];
+      // Or, to use all keys from the first object as headers (default behavior of the function if customHeaders is omitted):
+      // downloadJsonAsCsv(filteredArticles, "media_presence_report.csv");
+
+      downloadJsonAsCsv(
+        filteredArticles,
+        "media_presence_report.csv",
+        customHeaders
+      );
+    } else {
+      alert("No articles to download based on current filters.");
+    }
+  };
+
   const handleBooleanFilterChange = (
     filterKey: BooleanFilterKey,
     checked: boolean
@@ -70,6 +107,7 @@ export default function HomePage() {
   };
 
   const filteredArticles = useMemo(() => {
+    if (!articles) return [];
     return articles.filter((article) => {
       const searchMatch =
         article.headline.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -104,6 +142,53 @@ export default function HomePage() {
   useEffect(() => {
     setCurrentPage(1);
   }, [searchTerm, selectedCountry, selectedSentiment, activeBooleanFilters]);
+
+  // Calculate Share of Voice data
+  const shareOfVoiceData = useMemo((): SoVDataItem[] => {
+    if (!filteredArticles || filteredArticles.length === 0) {
+      return [];
+    }
+
+    const companyCounts = new Map<string, number>();
+    filteredArticles.forEach((article) => {
+      // Normalize company name for consistent counting (e.g., to lowercase)
+      // Or use a more robust normalization if needed
+      const normalizedCompany =
+        article.company?.trim().toLowerCase() || "Unknown Company";
+      companyCounts.set(
+        normalizedCompany,
+        (companyCounts.get(normalizedCompany) || 0) + 1
+      );
+    });
+
+    const totalArticlesInFilter = filteredArticles.length;
+    const sovArray: SoVDataItem[] = [];
+
+    companyCounts.forEach((count, companyName) => {
+      // Capitalize first letter of each word for display
+      const displayCompanyName = companyName
+        .split(" ")
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(" ");
+
+      sovArray.push({
+        companyName: displayCompanyName,
+        count,
+        sovPercentage: (count / totalArticlesInFilter) * 100,
+      });
+    });
+
+    // Sort by percentage descending, then by count, then by name
+    return sovArray.sort((a, b) => {
+      if (b.sovPercentage !== a.sovPercentage) {
+        return b.sovPercentage - a.sovPercentage;
+      }
+      if (b.count !== a.count) {
+        return b.count - a.count;
+      }
+      return a.companyName.localeCompare(b.companyName);
+    });
+  }, [filteredArticles]);
 
   const totalPages = Math.ceil(filteredArticles.length / ITEMS_PER_PAGE);
   const paginatedArticles = useMemo(() => {
@@ -247,8 +332,24 @@ export default function HomePage() {
               {filteredArticles.length} article
               {filteredArticles.length !== 1 ? "s" : ""} found
             </p>
-          </div>
 
+            <Button onClick={handleDownloadCsv}>Download CSV</Button>
+          </div>
+          {/* Share of Voice Display */}
+          {shareOfVoiceData.length > 0 && (
+            <SoVDisplay
+              sovData={shareOfVoiceData}
+              targetCompany={TARGET_COMPANY_NAME}
+            />
+          )}
+
+          {/* Result Count */}
+          <div className="mb-4 flex justify-between items-center">
+            <p className="text-lg font-semibold">
+              {filteredArticles.length} article
+              {filteredArticles.length !== 1 ? "s" : ""} found
+            </p>
+          </div>
           {paginatedArticles.length > 0 ? (
             <>
               {paginatedArticles.map((article, index) => (
