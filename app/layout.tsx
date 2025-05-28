@@ -1,29 +1,33 @@
-import "@/app/globals.css";
+// app/layout.tsx
+import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import { ThemeProvider } from "@/components/theme-provider";
+import "./globals.css";
+import { ThemeProvider } from "@/components/theme-provider"; // If you have theme provider
+import { AiCommandPalette } from "@/components/command-pallete";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export const metadata = {
-  title: "FedEx Media Presence Tracker",
-  description: "Track and analyze media coverage across various sources",
+export const metadata: Metadata = {
+  title: "FedEx Media Tracker",
+  description: "Track media presence and ask AI.",
 };
 
 export default function RootLayout({
   children,
-}: {
+}: Readonly<{
   children: React.ReactNode;
-}) {
+}>) {
   return (
-    <html lang="en" className="dark" style={{ colorScheme: "dark" }}>
+    <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
-        <ThemeProvider
+        <ThemeProvider // If you use ThemeProvider
           attribute="class"
-          defaultTheme="dark"
+          defaultTheme="system"
           enableSystem
           disableTransitionOnChange
         >
           {children}
+          <AiCommandPalette /> {/* Render the palette globally */}
         </ThemeProvider>
       </body>
     </html>

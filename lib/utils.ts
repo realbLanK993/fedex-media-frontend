@@ -121,3 +121,23 @@ function triggerCsvDownload(csvContent: string, filename: string): void {
     // or you'd need a server-side solution.
   }
 }
+
+export function toTitleCase(str: string | null | undefined): string {
+  if (!str) {
+    return "";
+  }
+
+  // Replace hyphens and underscores with spaces first to treat them as word separators
+  const stringWithSpaces = str.replace(/[-_]/g, " ");
+
+  return stringWithSpaces
+    .toLowerCase() // Convert the whole string to lowercase first to handle mixed case inputs
+    .split(" ") // Split into words
+    .map((word) => {
+      if (word.length === 0) {
+        return ""; // Handle multiple spaces leading to empty strings
+      }
+      return word.charAt(0).toUpperCase() + word.slice(1);
+    })
+    .join(" "); // Join words back with spaces
+}

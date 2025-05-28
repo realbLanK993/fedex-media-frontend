@@ -20,6 +20,7 @@ import { ArticleCard } from "@/components/article-card";
 import { ThemeToggle } from "@/components/theme";
 import { downloadJsonAsCsv } from "@/lib/utils";
 import { SoVDataItem, SoVDisplay } from "@/components/sov-display";
+import { useCommandPaletteStore } from "@/store/command-pallete";
 
 // ... (BooleanFilterKey and booleanFilterOptions remain the same) ...
 type BooleanFilterKey =
@@ -190,6 +191,8 @@ export default function HomePage() {
     });
   }, [filteredArticles]);
 
+  const { openPalette } = useCommandPaletteStore();
+
   const totalPages = Math.ceil(filteredArticles.length / ITEMS_PER_PAGE);
   const paginatedArticles = useMemo(() => {
     const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
@@ -212,7 +215,13 @@ export default function HomePage() {
         <h1 className="text-3xl font-bold text-left text-primary">
           FedEx Media Presence Tracker
         </h1>
-        <ThemeToggle />
+
+        <div className="flex gap-4 justify-center items-center">
+          <Button onClick={openPalette} variant={"outline"}>
+            Ask AI
+          </Button>
+          <ThemeToggle />
+        </div>
       </header>
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
