@@ -75,7 +75,7 @@ export default function FilterBar() {
     focusFilter.length + sentimentFilter.length + booleanFilters.length;
 
   return (
-    <div className="bg-card border rounded-lg p-4">
+    <div className="bg-card border p-4">
       <Accordion type="single" collapsible className="w-full">
         <AccordionItem value="filters">
           <div className="flex items-center justify-between">

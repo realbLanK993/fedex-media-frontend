@@ -207,7 +207,7 @@ export default function AiChatPage() {
                 </Avatar>
               )}
               <div
-                className={`p-3 rounded-xl max-w-[85%] md:max-w-[75%] break-words ${
+                className={`p-3 max-w-[85%] md:max-w-[75%] break-words ${
                   msg.sender === "user"
                     ? "bg-primary text-primary-foreground"
                     : "bg-muted"
@@ -269,7 +269,7 @@ export default function AiChatPage() {
                   <BotIcon className="h-4 w-4" />
                 </AvatarFallback>
               </Avatar>
-              <div className="p-3 rounded-lg bg-muted">
+              <div className="p-3 bg-muted">
                 <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
               </div>
             </div>

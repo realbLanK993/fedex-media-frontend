@@ -45,72 +45,74 @@
 }
 
 :root {
-  --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
-}
+  /* FedEx Light Theme using OKLCH */
+  --radius: 0rem; /* Your specified radius */
 
-.dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  --background: oklch(1 0 0); /* White */
+  --foreground: oklch(
+    0.25 0.01 280
+  ); /* Dark Gray for text (slightly purplish tint for harmony) */
+  /* Or: oklch(0.145 0 0) for a neutral dark gray from your example */
+
+  --card: oklch(1 0 0); /* White */
+  --card-foreground: oklch(0.25 0.01 280); /* Dark Gray text on card */
+
+  --popover: oklch(1 0 0); /* White */
+  --popover-foreground: oklch(0.25 0.01 280); /* Dark Gray text on popover */
+
+  --primary: oklch(0.38 0.17 296); /* FedEx Purple #4d148c */
+  --primary-foreground: oklch(
+    0.98 0 0
+  ); /* Off-White/Very Light Gray (for text on purple) */
+
+  --secondary: oklch(0.69 0.22 40); /* FedEx Orange #ff6200 */
+  --secondary-foreground: oklch(
+    0.98 0 0
+  ); /* Off-White text on Orange (test contrast) */
+  /* Or: oklch(0.15 0.01 30) for dark text if contrast is better */
+
+  --muted: oklch(0.95 0.005 290); /* Very Light Gray with a hint of purple */
+  /* Or: oklch(0.97 0 0) for neutral light gray */
+  --muted-foreground: oklch(0.45 0.01 290); /* Softer Gray text on muted */
+
+  --accent: oklch(
+    0.93 0.01 290
+  ); /* Slightly darker light gray with purple hint */
+  --accent-foreground: oklch(
+    0.38 0.17 296
+  ); /* FedEx Purple for text on accent */
+
+  --destructive: oklch(0.58 0.23 25); /* A standard red for errors */
+  /* (Original: oklch(0.577 0.245 27.325) ) */
+  --destructive-foreground: oklch(0.98 0 0); /* Light text on destructive */
+
+  --border: oklch(
+    0.88 0.003 290
+  ); /* FedEx Gray #cccccc (or slightly darker, with purple hint) */
+  /* Original #cccccc: oklch(0.85 0 0) */
+  --input: oklch(0.88 0.003 290); /* Same as border or slightly different */
+  --ring: oklch(
+    0.48 0.17 296
+  ); /* FedEx Purple (slightly lighter/more chromatic for focus) */
+
+  /* Chart colors - Using FedEx brand colors + neutrals/contrasts */
+  --chart-1: oklch(0.38 0.17 296); /* FedEx Purple */
+  --chart-2: oklch(0.69 0.22 40); /* FedEx Orange */
+  --chart-3: oklch(0.6 0.12 230); /* A contrasting Blue */
+  --chart-4: oklch(0.5 0 0); /* Mid Gray */
+  --chart-5: oklch(0.75 0.15 130); /* A contrasting Green */
+
+  /* Sidebar - assuming similar to card or background for light theme */
+  --sidebar: oklch(
+    0.99 0.002 290
+  ); /* Very light off-white with purple hint, or oklch(1 0 0) */
+  --sidebar-foreground: oklch(0.25 0.01 280);
+  --sidebar-primary: oklch(0.38 0.17 296);
+  --sidebar-primary-foreground: oklch(0.98 0 0);
+  --sidebar-accent: oklch(0.93 0.01 290);
+  --sidebar-accent-foreground: oklch(0.38 0.17 296);
+  --sidebar-border: oklch(0.88 0.003 290);
+  --sidebar-ring: oklch(0.48 0.17 296);
 }
 
 @layer base {
