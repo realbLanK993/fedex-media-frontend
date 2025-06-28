@@ -1,16 +1,17 @@
-// app/layout.tsx
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { IBM_Plex_Sans } from "next/font/google";
 import "./globals.css";
-import { ThemeProvider } from "@/components/theme-provider"; // If you have theme provider
-import { AiCommandPalette } from "@/components/command-pallete";
-
-const inter = Inter({ subsets: ["latin"] });
+import Navbar from "@/components/layout/navbar";
 
 export const metadata: Metadata = {
-  title: "FedEx Media Tracker",
-  description: "Track media presence and ask AI.",
+  title: "FedEx",
+  description: "FedEx Media Presence Tracking Tool",
 };
+
+const ibm_plex = IBM_Plex_Sans({
+  weight: ["100", "200", "300", "400", "500", "600", "700"],
+  subsets: ["latin"],
+});
 
 export default function RootLayout({
   children,
@@ -18,17 +19,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={inter.className}>
-        <ThemeProvider // If you use ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          {children}
-          <AiCommandPalette /> {/* Render the palette globally */}
-        </ThemeProvider>
+    <html lang="en" className="light">
+      <body
+        className={`${ibm_plex.className} flex min-h-screen flex-col antialiased`}
+      >
+        <Navbar />
+        {children}
       </body>
     </html>
   );
