@@ -35,6 +35,18 @@ export default function ArticleNavbar() {
     <div className="flex gap-4 max-h-[60px] w-full justify-between items-center">
       <p className="font-semibold ">{articleCount} Articles Found</p>
       <div className="flex gap-2">
+        {filterEnabled && (
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button onClick={clearFilter} variant={"outline"} size={"sm"}>
+                Clear <X />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Clear Filter</p>
+            </TooltipContent>
+          </Tooltip>
+        )}
         <Dialog>
           <Tooltip>
             <TooltipTrigger asChild>
@@ -67,7 +79,10 @@ export default function ArticleNavbar() {
           <Tooltip>
             <TooltipTrigger asChild>
               <DrawerTrigger asChild>
-                <Button variant={"default"} size={"sm"}>
+                <Button
+                  variant={filterEnabled ? "default" : "outline"}
+                  size={"sm"}
+                >
                   <Filter />
                 </Button>
               </DrawerTrigger>

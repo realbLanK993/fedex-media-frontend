@@ -23,7 +23,6 @@ export default function RootLayout({
       <body
         className={`${ibm_plex.className} flex min-h-screen flex-col antialiased`}
       >
-        <Navbar />
         {children}
       </body>
     </html>
