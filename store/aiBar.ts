@@ -6,6 +6,6 @@ interface AiStore {
 }
 
 export const useAiStore = create<AiStore>((set) => ({
-  AIenabled: true,
+  AIenabled: false,
   ToggleAI: () => set((state) => ({ AIenabled: !state.AIenabled })),
 }));

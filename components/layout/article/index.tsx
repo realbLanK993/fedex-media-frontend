@@ -14,7 +14,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Filter, HardDriveDownload, X } from "lucide-react";
+import { Filter, HardDriveDownload, Mail, X } from "lucide-react";
 import FilterForm from "@/components/articles/form";
 import {
   Drawer,
@@ -25,6 +25,7 @@ import {
 } from "@/components/ui/drawer";
 import { useState } from "react";
 import { useFilterStore } from "@/store/filterStore";
+import Link from "next/link";
 
 export default function ArticleNavbar() {
   const articleCount = useFilterStore((state) => state.data.length);
@@ -47,6 +48,19 @@ export default function ArticleNavbar() {
             </TooltipContent>
           </Tooltip>
         )}
+
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Link className=" cursor-pointer " href={"/dashboard/newsletter"}>
+              {" "}
+              <Mail />
+            </Link>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>Newsletter</p>
+          </TooltipContent>
+        </Tooltip>
+
         <Dialog>
           <Tooltip>
             <TooltipTrigger asChild>

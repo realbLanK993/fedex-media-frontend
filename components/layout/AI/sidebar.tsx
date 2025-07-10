@@ -15,7 +15,7 @@ export default function AIBar() {
   const toggleAI = useAiStore((state) => state.ToggleAI);
   return (
     AIEnabled && (
-      <div className="min-w-[600px] flex flex-col justify-between h-screen w-full p-4 border-l">
+      <div className="w-[600px] flex flex-col justify-between h-screen p-4 border-l">
         <nav className="flex justify-between gap-2">
           <p className="text-xl">Ask AI</p>
           <div className="flex gap-2 justify-center items-center">

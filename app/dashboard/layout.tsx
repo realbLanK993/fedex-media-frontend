@@ -14,10 +14,10 @@ export default function DashboardLayout({
 }>) {
   return (
     <div className="flex">
-      <main>
+      <div className="w-full">
         <Navbar />
         {children}
-      </main>
+      </div>
       <AIBar />
     </div>
   );
