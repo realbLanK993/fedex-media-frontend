@@ -2,6 +2,7 @@
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -26,12 +27,45 @@ import {
 import { useState } from "react";
 import { useFilterStore } from "@/store/filterStore";
 import Link from "next/link";
+import { downloadJsonAsCsv } from "@/lib/utils";
 
 export default function ArticleNavbar() {
   const articleCount = useFilterStore((state) => state.data.length);
   const [open, setOpen] = useState(false);
   const clearFilter = useFilterStore((state) => state.clearFilters);
   const filterEnabled = useFilterStore((state) => state.filterEnabled);
+  const data = useFilterStore((state) => state.data);
+
+  const handleDownloadCsv = () => {
+    // You can choose to download all articles or just the filtered ones
+    // For filtered articles:
+    if (data.length > 0) {
+      // Example: Define custom headers if you want a specific order or naming
+      const customHeaders = [
+        "headline",
+        "outlet",
+        "date",
+        "country",
+        "sentiment",
+        "summary",
+        "keyword",
+        "financial_performance", // These will be 0 or 1
+        "innovation",
+        "regulatory",
+        "environment_responsibility",
+        "social_responsibility",
+        "community_responsibility",
+        "e_commerce",
+        "hyperlink",
+      ];
+      // Or, to use all keys from the first object as headers (default behavior of the function if customHeaders is omitted):
+      // downloadJsonAsCsv(filteredArticles, "media_presence_report.csv");
+
+      downloadJsonAsCsv(data, "media_presence_report.csv", customHeaders);
+    } else {
+      alert("No articles to download based on current filters.");
+    }
+  };
   return (
     <div className="flex gap-4 max-h-[60px] w-full justify-between items-center">
       <p className="font-semibold ">{articleCount} Articles Found</p>
@@ -53,7 +87,9 @@ export default function ArticleNavbar() {
           <TooltipTrigger asChild>
             <Link className=" cursor-pointer " href={"/dashboard/newsletter"}>
               {" "}
-              <Mail />
+              <Button size={"sm"}>
+                <Mail />
+              </Button>
             </Link>
           </TooltipTrigger>
           <TooltipContent>
@@ -84,7 +120,9 @@ export default function ArticleNavbar() {
               </DialogDescription>
             </DialogHeader>
             <DialogFooter>
-              <Button>Download</Button>
+              <DialogClose asChild>
+                <Button onClick={handleDownloadCsv}>Download</Button>
+              </DialogClose>
             </DialogFooter>
           </DialogContent>
         </Dialog>

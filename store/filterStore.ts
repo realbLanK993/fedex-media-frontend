@@ -1,16 +1,6 @@
-import { sampleArticles } from "@/lib/dummy-data";
-import { Article, FormData } from "@/lib/types/article";
+import { getArticles } from "@/app/api-service";
+import { FilterState, FormData } from "@/lib/types/article";
 import { create } from "zustand";
-
-interface FilterState {
-  filters: FormData;
-  data: Article[];
-  clearFilters: () => void;
-  addFilter: (filter: FormData) => void;
-  changeFilters: (filters: FormData) => void;
-  filterEnabled: boolean;
-  enableFilter: (e: boolean) => void;
-}
 
 const defaultValues = {
   search: "",
@@ -26,13 +16,14 @@ const defaultValues = {
   communityResponsibility: false,
   eCommerce: false,
 };
-
+const d = await getArticles();
 export const useFilterStore = create<FilterState>((set) => ({
   filters: defaultValues,
-  data: sampleArticles,
+  data: d,
   addFilter: (filter) =>
     set((state) => ({
-      data: sampleArticles
+      data: d
+        //Country
         .filter((article) => {
           if (filter.country == "all") {
             return article;
@@ -45,6 +36,7 @@ export const useFilterStore = create<FilterState>((set) => ({
             }
           }
         })
+        //Search
         .filter((article) => {
           if (filter.search == "") {
             return article;
@@ -66,6 +58,7 @@ export const useFilterStore = create<FilterState>((set) => ({
             return article;
           }
         })
+        //Sentiment
         .filter((article) => {
           if (filter.sentiment == "all") {
             return article;
@@ -78,6 +71,7 @@ export const useFilterStore = create<FilterState>((set) => ({
             }
           }
         })
+        //Start Date
         .filter((article) => {
           if (!filter.start) {
             return article;
@@ -91,6 +85,7 @@ export const useFilterStore = create<FilterState>((set) => ({
             }
           }
         })
+        //End Date
         .filter((article) => {
           if (!filter.end) {
             return article;
@@ -103,10 +98,52 @@ export const useFilterStore = create<FilterState>((set) => ({
               console.log("Error in filtering start date: ", err);
             }
           }
+        })
+        //Attributes
+        .filter((article) => {
+          if (filter.financialPerformance) {
+            return article.financial_performance;
+          } else {
+            return article;
+          }
+        })
+        .filter((article) => {
+          if (filter.innovation) {
+            return article.innovation;
+          } else {
+            return article;
+          }
+        })
+        .filter((article) => {
+          if (filter.regulatory) {
+            return article.regulatory;
+          } else {
+            return article;
+          }
+        })
+        .filter((article) => {
+          if (filter.environmentResponsibility) {
+            return article.environment_responsibility;
+          } else {
+            return article;
+          }
+        })
+        .filter((article) => {
+          if (filter.socialResponsibility) {
+            return article.social_responsibility;
+          } else {
+            return article;
+          }
+        })
+        .filter((article) => {
+          if (filter.communityResponsibility) {
+            return article.community_responsibility;
+          } else {
+            return article;
+          }
         }),
     })),
-  clearFilters: () =>
-    set(() => ({ data: sampleArticles, filterEnabled: false })),
+  clearFilters: () => set(() => ({ data: d, filterEnabled: false })),
   changeFilters: (filters: FormData) => set(() => ({ filters })),
   filterEnabled: false,
   enableFilter: (e: boolean) => set(() => ({ filterEnabled: e })),

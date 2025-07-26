@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { IBM_Plex_Sans } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/layout/navbar";
-
+import { Toaster } from "@/components/ui/sonner";
+import { cookies } from "next/headers";
 export const metadata: Metadata = {
   title: "FedEx",
   description: "FedEx Media Presence Tracking Tool",
@@ -13,7 +14,7 @@ const ibm_plex = IBM_Plex_Sans({
   subsets: ["latin"],
 });
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -24,6 +25,7 @@ export default function RootLayout({
         className={`${ibm_plex.className} flex min-h-screen flex-col antialiased`}
       >
         {children}
+        <Toaster />
       </body>
     </html>
   );

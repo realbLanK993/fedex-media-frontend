@@ -1,9 +1,7 @@
-export interface Session {
-  id: string;
-  secretHash: string; // Uint8Array is a byte array
-  createdAt: Date;
-}
+import { sessionSelectSchema } from "@/db/schema";
+import { z } from "zod/v4";
 
+export type Session = z.infer<typeof sessionSelectSchema>;
 export interface SessionWithToken extends Session {
   token: string;
 }

@@ -1,43 +1,64 @@
-export interface Article {
-  quarter: string;
-  company: string;
-  country: string;
-  date: string;
-  headline: string;
-  hyperlink: string;
-  outlet: string;
-  media_type: string;
-  headline_name_included: boolean;
-  sentiment: "Positive" | "Negative" | "Neutral" | string;
-  financial_performance: 0 | 1;
-  innovation: 0 | 1;
-  regulatory: 0 | 1;
-  environment_responsibility: 0 | 1;
-  social_responsibility: 0 | 1;
-  community_responsibility: 0 | 1;
-  e_commerce: 0 | 1;
-  summary: string;
-  source: string;
-  keyword: string;
-  relevancy_score: number;
-  // New fields
-  text: string; // Full article text
-  AMEA_Leader?: string | null; // Can be a name or "None" (or null if "None" means absence of data)
-  AMEA_Executive?: string | null;
-  Local_Leaders?: string | null;
-}
+import { z } from "zod";
 
-export interface FormData {
-  search: string;
-  start: Date | undefined;
-  end: Date | undefined;
-  country: string;
-  sentiment: string;
-  financialPerformance: boolean;
-  innovation: boolean;
-  regulatory: boolean;
-  environmentResponsibility: boolean;
-  socialResponsibility: boolean;
-  communityResponsibility: boolean;
-  eCommerce: boolean;
-}
+export const ArticleSchema = z.object({
+  quarter: z.string(),
+  company: z.string(),
+  country: z.string(),
+  date: z.string(),
+  headline: z.string(),
+  hyperlink: z.string(),
+  outlet: z.string(),
+  media_type: z.string(),
+  headline_name_included: z.boolean(),
+  sentiment: z.union([
+    z.literal("Positive"),
+    z.literal("Negative"),
+    z.literal("Neutral"),
+    z.string(),
+  ]),
+  financial_performance: z.union([z.literal(0), z.literal(1)]),
+  innovation: z.union([z.literal(0), z.literal(1)]),
+  regulatory: z.union([z.literal(0), z.literal(1)]),
+  environment_responsibility: z.union([z.literal(0), z.literal(1)]),
+  social_responsibility: z.union([z.literal(0), z.literal(1)]),
+  community_responsibility: z.union([z.literal(0), z.literal(1)]),
+  e_commerce: z.union([z.literal(0), z.literal(1)]),
+  summary: z.string(),
+  source: z.string(),
+  keyword: z.string(),
+  relevancy_score: z.number(),
+  // New fields
+  text: z.string(),
+  AMEA_Leader: z.string().nullable().optional(),
+  AMEA_Executive: z.string().nullable().optional(),
+  Local_Leaders: z.string().nullable().optional(),
+});
+
+export const FormDataSchema = z.object({
+  search: z.string(),
+  start: z.date().optional(),
+  end: z.date().optional(),
+  country: z.string(),
+  sentiment: z.string(),
+  financialPerformance: z.boolean(),
+  innovation: z.boolean(),
+  regulatory: z.boolean(),
+  environmentResponsibility: z.boolean(),
+  socialResponsibility: z.boolean(),
+  communityResponsibility: z.boolean(),
+  eCommerce: z.boolean(),
+});
+
+export const FilterStateSchema = z.object({
+  filters: FormDataSchema,
+  data: z.array(ArticleSchema),
+  clearFilters: z.function().args().returns(z.void()),
+  addFilter: z.function().args(FormDataSchema).returns(z.void()),
+  changeFilters: z.function().args(FormDataSchema).returns(z.void()),
+  filterEnabled: z.boolean(),
+  enableFilter: z.function().args(z.boolean()).returns(z.void()),
+});
+
+export type Article = z.infer<typeof ArticleSchema>;
+export type FormData = z.infer<typeof FormDataSchema>;
+export type FilterState = z.infer<typeof FilterStateSchema>;

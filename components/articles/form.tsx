@@ -139,7 +139,6 @@ export default function FilterBar({
                             onSelect={(date) =>
                               field.onChange(date ?? undefined)
                             }
-                            initialFocus
                           />
                         </PopoverContent>
                       </Popover>
@@ -153,6 +152,7 @@ export default function FilterBar({
             </div>
 
             <FormField
+              disabled
               control={form.control}
               name="country"
               render={({ field }) => (
@@ -163,7 +163,7 @@ export default function FilterBar({
                     defaultValue={field.value}
                   >
                     <FormControl>
-                      <SelectTrigger className="w-full" id="country">
+                      <SelectTrigger disabled className="w-full" id="country">
                         <SelectValue placeholder="Select a country" />
                       </SelectTrigger>
                     </FormControl>

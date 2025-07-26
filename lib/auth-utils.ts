@@ -1,7 +1,10 @@
-import { LibSQLDatabase } from "drizzle-orm/libsql";
-import { SessionWithToken } from "./types/auth";
-import { sessionTable } from "@/db/schema";
+import { sessions } from "@/db/schema";
 import { hash } from "argon2";
+import { SessionWithToken } from "./types/auth";
+import { db } from "@/db";
+import { eq } from "drizzle-orm";
+import { hashPwd, isProduction, verifyPwd } from "./utils";
+import { cookies } from "next/headers";
 
 function generateSecureRandomString(): string {
   // Human readable alphabet (a-z, 0-9 without l, o, 0, 1 to avoid confusion)
@@ -20,7 +23,7 @@ function generateSecureRandomString(): string {
   return id;
 }
 
-async function createSession(db: LibSQLDatabase): Promise<SessionWithToken> {
+export async function createSession(userId: number): Promise<SessionWithToken> {
   const now = new Date();
   const id = generateSecureRandomString();
   const secret = generateSecureRandomString();
@@ -34,21 +37,74 @@ async function createSession(db: LibSQLDatabase): Promise<SessionWithToken> {
   const session: SessionWithToken = {
     id,
     secretHash,
-    createdAt: now,
+    userId,
+    createdAt: now.getTime(),
     token,
   };
 
-  await db.insert(sessionTable).values({
+  await db.insert(sessions).values({
     id: session.id,
-    secret_hash: generateSecureRandomString(),
+    secretHash: generateSecureRandomString(),
+    userId,
     createdAt: now.getTime(),
   });
 
   return session;
 }
 
-async function hashSecret(secret: string): Promise<Uint8Array> {
-  const secretBytes = new TextEncoder().encode(secret);
-  const secretHashBuffer = await crypto.subtle.digest("SHA-256", secretBytes);
-  return new Uint8Array(secretHashBuffer);
+export const getSession = async (sessionId: string) => {
+  const session = await db.query.sessions.findFirst({
+    where: eq(sessions.id, sessionId),
+  });
+  if (session) {
+    return session;
+  }
+  return null;
+};
+
+export async function validateSession(
+  sessionId: string,
+  sessionSecret: string
+) {
+  const session = await getSession(sessionId);
+  if (session) {
+    const hash = session.secretHash;
+    if (hash) {
+      if (await verifyPwd(hash, sessionSecret)) {
+        return true;
+      }
+    }
+  }
+
+  return false;
 }
+
+export const createAndAssignToken = async (token: string) => {
+  try {
+    const cookieStore = await cookies();
+    cookieStore.set("session_token", token, {
+      secure: isProduction(),
+      httpOnly: true,
+      //TODO: Need to change this to a proper time later
+      maxAge: 60, // This is 60 seconds
+    });
+    return true;
+  } catch (err) {
+    console.error(
+      " Some error occured while trying to create and assign tokens\n",
+      err
+    );
+    return false;
+  }
+};
+
+export const deleteToken = async (token: string) => {
+  try {
+    const cookieStore = await cookies();
+    cookieStore.delete("session_token");
+    return true;
+  } catch (err) {
+    console.error(" Some error occured while trying to delete tokens\n", err);
+    return false;
+  }
+};
