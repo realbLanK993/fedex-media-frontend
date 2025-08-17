@@ -21,7 +21,8 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { isAuthenticatedAtom } from "@/store/authStore";
-import { useAtom } from "jotai";
+import { useAtom, useAtomValue, useSetAtom } from "jotai";
+import { aiAtom } from "@/store/temp-store";
 
 const getUserId = (): string => {
   if (typeof window === "undefined") {
@@ -54,6 +55,8 @@ export default function AIBar() {
   const [currentUserId, setCurrentUserId] = useState<string>("");
   const messagesEndRef = useRef<null | HTMLDivElement>(null);
   const [isAuthenticated] = useAtom(isAuthenticatedAtom);
+  const ai = useAtomValue(aiAtom);
+  const setAI = useSetAtom(aiAtom);
 
   useEffect(() => {
     // Set user ID once on mount (client-side only)
@@ -133,6 +136,7 @@ export default function AIBar() {
   };
 
   return (
+    ai &&
     isAuthenticated && (
       <div className="w-[900px] flex flex-col justify-between h-screen p-4 border-l">
         <header>
@@ -154,7 +158,11 @@ export default function AIBar() {
                 </TooltipContent>
               </Tooltip>
 
-              <Button size={"icon"} variant={"ghost"}>
+              <Button
+                onClick={() => setAI(false)}
+                size={"icon"}
+                variant={"ghost"}
+              >
                 <X size={18} />
               </Button>
             </div>

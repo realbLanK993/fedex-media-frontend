@@ -24,7 +24,7 @@ export default function HomeLayout({
   ];
   return (
     <div>
-      <SecondaryNavbar>
+      {/* <SecondaryNavbar>
         <div className="flex w-full justify-between">
           {logisticsKeywords.map((keyword, index) => (
             <button
@@ -39,7 +39,7 @@ export default function HomeLayout({
             </button>
           ))}
         </div>
-      </SecondaryNavbar>
+      </SecondaryNavbar> */}
       <main>{children}</main>
     </div>
   );

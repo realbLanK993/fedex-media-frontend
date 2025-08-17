@@ -54,7 +54,7 @@ const LoginForm = () => {
         setIsAuthenticated(true);
         setUserData(data.user);
         toast.success("You are successfully logged in");
-        return redirect("/dashboard");
+        return redirect("/dashboard/home");
       }
     } else {
       toast.error(await response.text());

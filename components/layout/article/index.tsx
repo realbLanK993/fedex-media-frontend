@@ -26,6 +26,7 @@ import {
 } from "@/components/ui/drawer";
 import { useState } from "react";
 import {
+  articleCountAtom,
   articleDataAtom,
   defaultFilterValues,
   filterAtom,
@@ -36,10 +37,6 @@ import { downloadJsonAsCsv } from "@/lib/utils";
 import { atom, useAtomValue, useSetAtom } from "jotai";
 
 export default function ArticleNavbar() {
-  const articleCountAtom = atom((get) => {
-    const data = get(articleDataAtom);
-    return data ? data.length : 0;
-  });
   const articleCount = useAtomValue(articleCountAtom);
   const [open, setOpen] = useState(false);
   const filterEnabled = useAtomValue(isFilter);
@@ -80,7 +77,7 @@ export default function ArticleNavbar() {
   };
   return (
     <div className="flex gap-4 max-h-[60px] w-full justify-between items-center">
-      <p className="font-semibold ">{articleCount} Articles Found</p>
+      <p className="font-semibold "> {articleCount} Articles Found</p>
       <div className="flex gap-2">
         {filterEnabled && (
           <Tooltip>
