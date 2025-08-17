@@ -5,7 +5,7 @@ import Link from "next/link";
 
 export default function Unauthenticated() {
   return (
-    <div>
+    <div className="flex flex-col h-[calc(100vh-220px)] justify-center items-center">
       <EmptyState
         icon={UserRoundX}
         title="You are not authenticated"

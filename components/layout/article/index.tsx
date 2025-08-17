@@ -25,21 +25,33 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer";
 import { useState } from "react";
-import { useFilterStore } from "@/store/filterStore";
+import {
+  articleDataAtom,
+  defaultFilterValues,
+  filterAtom,
+  isFilter,
+} from "@/store/filterStore";
 import Link from "next/link";
 import { downloadJsonAsCsv } from "@/lib/utils";
+import { atom, useAtomValue, useSetAtom } from "jotai";
 
 export default function ArticleNavbar() {
-  const articleCount = useFilterStore((state) => state.data.length);
+  const articleCountAtom = atom((get) => {
+    const data = get(articleDataAtom);
+    return data ? data.length : 0;
+  });
+  const articleCount = useAtomValue(articleCountAtom);
   const [open, setOpen] = useState(false);
-  const clearFilter = useFilterStore((state) => state.clearFilters);
-  const filterEnabled = useFilterStore((state) => state.filterEnabled);
-  const data = useFilterStore((state) => state.data);
-
+  const filterEnabled = useAtomValue(isFilter);
+  const data = useAtomValue(articleDataAtom);
+  const clear = useSetAtom(filterAtom);
+  const clearFilter = () => {
+    clear({ ...defaultFilterValues });
+  };
   const handleDownloadCsv = () => {
     // You can choose to download all articles or just the filtered ones
     // For filtered articles:
-    if (data.length > 0) {
+    if (data && data.length > 0) {
       // Example: Define custom headers if you want a specific order or naming
       const customHeaders = [
         "headline",

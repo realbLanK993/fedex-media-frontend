@@ -1,4 +1,5 @@
 import NewsletterNavbar from "@/components/layout/newsletter";
+import SecondaryNavbar from "@/components/layout/second-nav";
 
 export default function NewsletterLayout({
   children,
@@ -7,7 +8,10 @@ export default function NewsletterLayout({
 }) {
   return (
     <div className="h-[70px]">
-      <NewsletterNavbar />
+      <SecondaryNavbar>
+        <NewsletterNavbar />
+      </SecondaryNavbar>
+
       <main>{children}</main>
     </div>
   );

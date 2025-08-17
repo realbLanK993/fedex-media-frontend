@@ -187,3 +187,23 @@
     @apply bg-background text-foreground;
   }
 }
+select {
+  transition: 0.4s;
+}
+select:focus-visible {
+  border: none;
+  outline: none;
+}
+
+option {
+  @apply flex flex-col gap-4 p-4 border border-accent transition-all duration-300 ease-in-out;
+}
+
+option:hover,
+option:focus {
+  background: plum;
+}
+
+option:checked {
+  font-weight: bold;
+}

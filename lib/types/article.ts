@@ -5,6 +5,7 @@ export const ArticleSchema = z.object({
   company: z.string(),
   country: z.string(),
   date: z.string(),
+  image: z.string().optional(),
   headline: z.string(),
   hyperlink: z.string(),
   outlet: z.string(),
@@ -58,7 +59,18 @@ export const FilterStateSchema = z.object({
   filterEnabled: z.boolean(),
   enableFilter: z.function().args(z.boolean()).returns(z.void()),
 });
-
 export type Article = z.infer<typeof ArticleSchema>;
 export type FormData = z.infer<typeof FormDataSchema>;
-export type FilterState = z.infer<typeof FilterStateSchema>;
+
+export type FilterState = {
+  filters: FormData;
+  data: Article[] | null;
+  setData: (data: Article[]) => void;
+  setFilteredData: (data: Article[]) => void;
+  filteredData: Article[] | null;
+  clearFilters: () => void;
+  addFilter: (filters: FormData) => void;
+  changeFilters: (filters: FormData) => void;
+  filterEnabled: boolean;
+  enableFilter: (e: boolean) => void;
+};

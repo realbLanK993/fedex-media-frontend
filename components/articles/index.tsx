@@ -1,141 +1,83 @@
 "use client";
 
 import * as React from "react";
+
 import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardContent,
-} from "@/components/ui/card";
-import { useFilterStore } from "@/store/filterStore";
-import { FilterMessage } from "./filter-enabled";
-import { useSearchParams } from "next/navigation";
-import Link from "next/link";
+  articleDataAtom,
+  filteredArticleDataAtom,
+  isFilter,
+} from "@/store/filterStore";
 import { ScrollArea } from "../ui/scroll-area";
 import { Database, Filter, Loader2 } from "lucide-react";
-import { Button } from "../ui/button";
-import { Input } from "../ui/input";
 import { toast } from "sonner";
-import { Skeleton } from "../ui/skeleton";
 import EmptyState from "../ui/empty-state";
+import { getArticles } from "@/app/api-service";
+import { useAtom, useAtomValue } from "jotai";
+import ArticleCard from "./card";
 
-const LeaderDisplay = ({
-  label,
-  name,
-}: {
-  label: string;
-  name: string | null;
-}) => {
-  if (!name || name.toLowerCase() === "none") return null;
-
-  return (
-    <div className="flex items-center gap-2 p-2">
-      <div className="min-w-0 flex-1">
-        <p className="text-xs">{label}</p>
-        <p className="text-sm font-bold">{name}</p>
-      </div>
-    </div>
-  );
-};
-
-const ITEMS_PER_PAGE = 10;
+// const ITEMS_PER_PAGE = 100;
 
 const ArticlesList = () => {
   const [currentPage, setCurrentPage] = React.useState<number | null>(null);
-  const data = useFilterStore((state) => state.data);
-  const filterEnabled = useFilterStore((state) => state.filterEnabled);
+  const [data, setData] = useAtom(articleDataAtom);
+  const filteredData = useAtomValue(filteredArticleDataAtom);
+  const filterEnabled = useAtomValue(isFilter);
   const targetElementRef = React.useRef<HTMLDivElement | null>(null);
-  const minPage = 1;
-  const maxPage = Math.floor(data.length / ITEMS_PER_PAGE);
+  // const minPage = 1;
+  // const maxPage = Math.floor(
+  //   filteredData ? filteredData.length / ITEMS_PER_PAGE : 1
+  // );
+
+  React.useEffect(() => {
+    if (!data) {
+      getArticles()
+        .then(async (res) => {
+          if (res) {
+            setData(res);
+          } else {
+            toast.error("Error when fetching articles");
+          }
+        })
+        .catch(() => {
+          console.error("Error when fetching articles");
+          toast.error("Error when fetching articles");
+        });
+    }
+  }, []);
 
   React.useEffect(() => {
     const locallyAvailable = window.localStorage.getItem("page");
     if (locallyAvailable) {
-      setCurrentPage((prev) => parseInt(locallyAvailable));
+      setCurrentPage(() => parseInt(locallyAvailable));
     } else {
       window.localStorage.setItem("page", "1");
-      setCurrentPage((prev) => 1);
+      setCurrentPage(() => 1);
     }
   }, [data]);
 
-  const scrollToElement = () => {
+  (() => {
     if (targetElementRef.current) {
       targetElementRef.current.scrollIntoView({
         behavior: "auto",
         block: "start",
       });
     }
-  };
+  })();
 
   return (
     <React.Fragment>
-      <ScrollArea className="flex flex-1 h-[calc(100vh-220px)]">
+      <ScrollArea className="flex flex-1 h-[calc(100vh-354px)]">
         <div ref={targetElementRef} />
         <div className="flex flex-col gap-4 w-full">
           {currentPage ? (
-            data.length > 0 ? (
-              data
-                .slice(
-                  (currentPage - 1) * ITEMS_PER_PAGE,
-                  currentPage * ITEMS_PER_PAGE
-                )
+            filteredData && filteredData.length > 0 ? (
+              filteredData
+                // .slice(
+                //   (currentPage - 1) * ITEMS_PER_PAGE,
+                //   currentPage * ITEMS_PER_PAGE
+                // )
                 .map((article, index) => (
-                  <Link
-                    key={index}
-                    href={article.hyperlink}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group"
-                  >
-                    <Card className="hover:shadow-lg transition-shadow">
-                      <CardHeader>
-                        <div className="flex flex-col gap-2">
-                          <div className="flex w-full gap-2 justify-between">
-                            <small>{article.company.toLocaleUpperCase()}</small>
-                            <small className="text-primary">
-                              {article.sentiment.toLocaleUpperCase()}
-                            </small>
-                          </div>
-                          <CardTitle className="group-hover:underline">
-                            {article.headline}
-                          </CardTitle>
-                          <div className="flex gap-2 items-center">
-                            <CardDescription>{article.country}</CardDescription>
-                            <span className="w-1 h-1 bg-primary rounded-full" />
-                            <CardDescription>{article.outlet}</CardDescription>
-                            <span className="w-1 h-1 bg-primary rounded-full" />
-                            <CardDescription>{article.date}</CardDescription>
-                          </div>
-                        </div>
-                      </CardHeader>
-                      <CardContent>
-                        <p>{article.summary}</p>
-                        {((article.AMEA_Leader &&
-                          article.AMEA_Leader.toLowerCase() !== "none") ||
-                          (article.AMEA_Executive &&
-                            article.AMEA_Executive.toLowerCase() !== "none") ||
-                          (article.Local_Leaders &&
-                            article.Local_Leaders.toLowerCase() !==
-                              "none")) && (
-                          <div className="flex flex-col md:flex-row gap-4 mt-4">
-                            <LeaderDisplay
-                              label="AMEA Leader"
-                              name={article.AMEA_Leader ?? ""}
-                            />
-                            <LeaderDisplay
-                              label="AMEA Executive"
-                              name={article.AMEA_Executive ?? ""}
-                            />
-                            <LeaderDisplay
-                              label="Local Leaders"
-                              name={article.Local_Leaders ?? ""}
-                            />
-                          </div>
-                        )}
-                      </CardContent>
-                    </Card>
-                  </Link>
+                  <ArticleCard key={index} article={article} />
                 ))
             ) : filterEnabled ? (
               <EmptyState
@@ -161,14 +103,14 @@ const ArticlesList = () => {
           )}
         </div>
       </ScrollArea>
-      <div className="flex flex-1 w-full h-full items-end justify-center p-2">
+      {/* <div className="flex flex-1 w-full h-full items-end justify-center p-2">
         {currentPage ? (
-          data.length > ITEMS_PER_PAGE && (
+          filteredData &&
+          filteredData.length > ITEMS_PER_PAGE && (
             <div className="flex w-full gap-4 justify-center items-center">
               <Button
                 disabled={currentPage === minPage}
                 onClick={() => {
-                  scrollToElement();
                   if (currentPage > minPage) {
                     setCurrentPage((prev) => {
                       if (prev) {
@@ -208,15 +150,14 @@ const ArticlesList = () => {
                       })
                     }
                     min={0}
-                    max={Math.floor(data.length / ITEMS_PER_PAGE)}
+                    max={Math.floor(filteredData.length / ITEMS_PER_PAGE)}
                     className="w-[60px] border-0 border-b-2 border-accent focus:ring-0 focus-visible:ring-0"
                   />
                 )}
-                <p>of {Math.floor(data.length / ITEMS_PER_PAGE)}</p>
+                <p>of {Math.floor(filteredData.length / ITEMS_PER_PAGE)}</p>
               </div>
               <Button
                 onClick={() => {
-                  scrollToElement();
                   if (currentPage < maxPage) {
                     setCurrentPage((prev) => {
                       if (prev) {
@@ -240,7 +181,7 @@ const ArticlesList = () => {
             <Skeleton className="px-4 w-16 h-10" />
           </div>
         )}
-      </div>
+      </div> */}
     </React.Fragment>
   );
 };

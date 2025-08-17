@@ -5,7 +5,6 @@ import {
   Dialog,
   DialogClose,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -35,7 +34,7 @@ const CreateNewPeople = ({
   const [name, setName] = useState("");
   const [designation, setDesignation] = useState("");
   const [email, setEmail] = useState("");
-  const [isPending, startTransition] = useTransition();
+  // const [isPending, startTransition] = useTransition();
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (name == "") {
@@ -66,13 +65,14 @@ const CreateNewPeople = ({
           const data = (await res.json()) as NewsletterPeople;
           create(data);
 
-          toast("Created new person");
+          toast.success("Created new person");
         } else {
-          toast("Error creating new person");
+          toast.error("Error creating new person");
         }
       })
       .catch((err) => {
-        toast("Error creating new person");
+        toast.error("Catching Error creating new person");
+        console.error(err);
       });
   };
 
@@ -140,9 +140,9 @@ export default function NewsletterPeopleBtn({
 }) {
   const [people, setPeople] = useState<NewsletterPeople[]>([]);
   const [filteredPeople, setFilteredPeople] = useState<NewsletterPeople[]>([]);
-  const [groupName, setGroupName] = useState("");
+  // const [groupName, setGroupName] = useState("");
   const [isPending, startTransition] = useTransition();
-  const [error, setError] = useState<Error | null>(null);
+  const [error] = useState<Error | null>(null);
   const [selectedPeople, setSelectedPeople] = useState<NewsletterPeople[]>([]);
 
   const disableInput = people.length < 1;
@@ -157,15 +157,12 @@ export default function NewsletterPeopleBtn({
     } else {
       const currentSelect = people.find((e) => e.id == id);
       if (currentSelect) {
-        console.log("selecting");
-
         setSelectedPeople((prev) => [...prev, currentSelect]);
       }
     }
   };
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(selectedPeople, "people");
 
     set(selectedPeople);
   };
@@ -195,13 +192,12 @@ export default function NewsletterPeopleBtn({
           setPeople(data);
           setFilteredPeople(data);
         })
-        .catch((err) => {
+        .catch(() => {
           toast.error("Error fetching people's data");
         });
     });
   }, []);
   const createNewPeople = (data: NewsletterPeople) => {
-    console.log("create", people);
     setFilteredPeople((prev) => [...prev, { ...data }]);
     setPeople((prev) => [...prev, { ...data }]);
   };

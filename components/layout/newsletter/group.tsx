@@ -5,43 +5,23 @@ import {
   Dialog,
   DialogClose,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import {
-  FormEvent,
-  FormEventHandler,
-  useEffect,
-  useState,
-  useTransition,
-} from "react";
+import { FormEvent, useEffect, useState, useTransition } from "react";
 import { NewsletterGroups, NewsletterPeople } from "@/lib/types/newsletter";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 import {
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { CircleMinus, Filter, User, Users, X } from "lucide-react";
+import { Filter, User, Users } from "lucide-react";
 import { createGroup, getGroupData, getPeopleData } from "@/app/api-service";
 import { toast } from "sonner";
 import EmptyState from "@/components/ui/empty-state";
@@ -55,7 +35,7 @@ const CreateNewGroup = ({
   const [filteredPeople, setFilteredPeople] = useState<NewsletterPeople[]>([]);
   const [groupName, setGroupName] = useState("");
   const [isPending, startTransition] = useTransition();
-  const [error, setError] = useState<Error | null>(null);
+  const [error] = useState<Error | null>(null);
   const [selectedPeople, setSelectedPeople] = useState<NewsletterPeople[]>([]);
   const disableInput = people.length < 1;
   const handleSelect = (id: number) => {
@@ -87,20 +67,18 @@ const CreateNewGroup = ({
     createGroup({ name: newGroup.name, person_ids: newGroup.person_ids })
       .then(async (res) => {
         if (res.ok) {
-          toast("New group created");
+          toast.success("New group created");
           create((await res.json()) as NewsletterGroups);
         }
       })
-      .catch((err) => {
-        toast("Error creating group");
+      .catch(() => {
+        toast.error("Error creating group");
       })
       .finally(() => {
         setSelectedPeople([]);
       });
   };
   const handleSearch = (search: string) => {
-    console.log("changing");
-
     if (search == "") {
       setFilteredPeople(people);
     }
@@ -126,7 +104,7 @@ const CreateNewGroup = ({
           setPeople(data);
           setFilteredPeople(data);
         })
-        .catch((err) => {
+        .catch(() => {
           toast.error("Error fetching people's data");
         });
     });
@@ -303,11 +281,10 @@ export default function NewsletterGroupBtn({
   const [selectedGroups, setSelectedGroups] = useState<NewsletterGroups[]>([]);
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<Error | null>(null);
-  const [search, setSearch] = useState("");
+  // const [search, setSearch] = useState("");
   const createNewGroup = (data: NewsletterGroups) => {
     setGroup((prev) => [...prev, { ...data }]);
     setFilteredGroup((prev) => [...prev, { ...data }]);
-    console.log(data);
   };
 
   const disableInput = group.length < 1;

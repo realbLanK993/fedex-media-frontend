@@ -6,18 +6,16 @@ import { NewsletterGroups, NewsletterPeople } from "@/lib/types/newsletter";
 import NewsletterPeopleBtn from "./people";
 import { sendEmail } from "@/app/api-service";
 import { toast } from "sonner";
+import { Mail } from "lucide-react";
 
 export default function NewsletterNavbar() {
   const [selectedGroups, setSelectedGroups] = useState<NewsletterGroups[]>([]);
   const [selectedPeople, setSelectedPeople] = useState<NewsletterPeople[]>([]);
   const [loading, setLoading] = useState(false);
   const handleGroupSelection = (data: NewsletterGroups[]) => {
-    console.log(data, "GROUP");
-
     setSelectedGroups([...data]);
   };
   const handlePeopleSelection = (data: NewsletterPeople[]) => {
-    console.log(data, "PEOPLE");
     setSelectedPeople([...data]);
   };
 
@@ -28,15 +26,15 @@ export default function NewsletterNavbar() {
     };
     setLoading(true);
     sendEmail(finalData)
-      .then((res) => {
+      .then(async (res) => {
         if (res.ok) {
-          toast("Sent Emails Successfully");
+          toast.success(await res.text());
         } else {
-          toast("Error sending emails");
+          toast.error(await res.text());
         }
       })
-      .catch((err) => {
-        toast("Server error while sending emails");
+      .catch(() => {
+        toast.error("Server error while sending emails");
       })
       .finally(() => {
         setLoading(false);
@@ -44,13 +42,13 @@ export default function NewsletterNavbar() {
   };
 
   return (
-    <header className=" p-4 flex justify-between gap-2 ">
+    <header className="flex justify-between gap-2 ">
       <div className="flex gap-2">
         <NewsletterGroupBtn set={handleGroupSelection} />
         <NewsletterPeopleBtn set={handlePeopleSelection} />
       </div>
       <Button disabled={loading} onClick={handleSendMail}>
-        {loading ? "Sending..." : "Send"}
+        {loading ? "Sending..." : "Send"} <Mail />
       </Button>
     </header>
   );

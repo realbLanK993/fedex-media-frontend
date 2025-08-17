@@ -1,7 +1,6 @@
 import { int, sqliteTable, text } from "drizzle-orm/sqlite-core";
-import * as z from "zod/v4";
-import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { relations } from "drizzle-orm";
+
 export const users = sqliteTable("users", {
   id: int().primaryKey({ autoIncrement: true }),
   name: text().notNull(),
@@ -44,16 +43,16 @@ export const sessionsRelation = relations(sessions, ({ one }) => ({
   }),
 }));
 
-export const usersMetadataSchema = createSelectSchema(usersMetadata);
+export type UserSelectWithPasswordSchema = typeof users.$inferSelect;
+export type UserSelectSchema = Omit<typeof users.$inferSelect, "passwordHash">;
+export type UserInsertSchema = typeof users.$inferInsert;
 
-export const usersSelectSchema = createSelectSchema(users);
-export const usersInsertSchema = createInsertSchema(users);
+export type UserMetadataSelectSchema = typeof usersMetadata.$inferSelect;
+export type UserMetadataInsertSchema = typeof usersMetadata.$inferInsert;
 
-export const sessionSelectSchema = createSelectSchema(sessions);
-export const sessionInsertSchema = createInsertSchema(sessions);
-
-export type UsersSelect = z.infer<typeof usersSelectSchema>;
-export type UsersWithMetadata = Omit<UsersSelect, "passwordHash"> & {
-  metadata?: Omit<z.infer<typeof usersMetadataSchema>, "userId">;
+export type UserWithMetadata = UserSelectSchema & {
+  profileMetadata: Omit<UserMetadataSelectSchema, "userId">;
 };
-export type UsersInsert = z.infer<typeof usersInsertSchema>;
+
+export type SessionSelectSchema = typeof sessions.$inferSelect;
+export type SessionInsertScehma = typeof sessions.$inferInsert;

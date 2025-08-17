@@ -5,10 +5,12 @@ export default function EmptyState({
   icon,
   title,
   description,
+  action,
 }: {
   icon: LucideIcon;
   title: string;
   description: string;
+  action?: string;
 }) {
   const Icon = icon;
   return (
@@ -21,6 +23,7 @@ export default function EmptyState({
         <p className="text-xl font-light">{title}</p>
         <small>{description}</small>
       </div>
+      {action && <Button>{action}</Button>}
     </div>
   );
 }

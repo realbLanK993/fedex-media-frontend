@@ -1,4 +1,4 @@
-import { hashPwd } from "@/lib/utils";
+import { hash } from "argon2";
 import { db } from ".";
 import { users } from "./schema";
 
@@ -6,11 +6,11 @@ const seed = async () => {
   if (!process.argv[2]) {
     throw new Error("Provide password for the admin");
   }
-  const hash = await hashPwd(process.argv[2]);
+  const h = await hash(process.argv[3]);
   await db.insert(users).values({
     name: "Admin",
     email: "admin@gmail.com",
-    passwordHash: hash,
+    passwordHash: h,
     role: "ADMIN",
   });
 };

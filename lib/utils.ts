@@ -1,4 +1,3 @@
-import * as argon2 from "argon2";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -6,11 +5,17 @@ interface GenericObject {
   [key: string]: any;
 }
 
+declare global {
+  interface Navigator {
+    msSaveBlob: (blob: Blob, fileName: string) => boolean;
+  }
+}
+
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-function escapeCsvCell(cellValue: any): string {
+function escapeCsvCell(cellValue: string): string {
   if (cellValue === null || cellValue === undefined) {
     return "";
   }
@@ -110,33 +115,8 @@ function triggerCsvDownload(csvContent: string, filename: string): void {
     // Fallback for older browsers (less common now)
     // This might open the CSV in the browser window instead of downloading
     console.warn("Download attribute not supported. Attempting fallback.");
-    (window.navigator as any).msSaveBlob?.(blob, filename); // For IE
+    window.navigator.msSaveBlob?.(blob, filename); // For IE
     // For other very old browsers, this might be the best you can do,
     // or you'd need a server-side solution.
   }
 }
-
-export async function hashPwd(text: string) {
-  try {
-    const hash = await argon2.hash(text);
-    return hash;
-  } catch (err) {
-    console.error("Error creating hash:\n ", err);
-    return;
-  }
-}
-
-export async function verifyPwd(hash: string, text: string) {
-  try {
-    const verify = await argon2.verify(hash, text);
-    if (verify) {
-      return true;
-    }
-    return false;
-  } catch (err) {
-    console.error("Error verifying hash:\n", err);
-    return false;
-  }
-}
-
-export const isProduction = () => process.env.NODE_ENV === "production";

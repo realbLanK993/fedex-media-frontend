@@ -2,27 +2,26 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { useAiStore } from "@/store/aiBar";
 import { TimerResetIcon, X } from "lucide-react";
 
 import { useEffect, useState, useRef, FormEvent } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import {
-  ArrowLeft,
   SendHorizonalIcon,
   UserIcon,
   BotIcon,
   Loader2,
   ExternalLinkIcon,
 } from "lucide-react";
-import Link from "next/link";
 import { ApiMetadata, fetchChatResponse } from "@/app/api-service";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { isAuthenticatedAtom } from "@/store/authStore";
+import { useAtom } from "jotai";
 
 const getUserId = (): string => {
   if (typeof window === "undefined") {
@@ -49,12 +48,12 @@ interface Message {
 }
 
 export default function AIBar() {
-  const { AIenabled, ToggleAI } = useAiStore();
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [currentUserId, setCurrentUserId] = useState<string>("");
   const messagesEndRef = useRef<null | HTMLDivElement>(null);
+  const [isAuthenticated] = useAtom(isAuthenticatedAtom);
 
   useEffect(() => {
     // Set user ID once on mount (client-side only)
@@ -134,7 +133,7 @@ export default function AIBar() {
   };
 
   return (
-    AIenabled && (
+    isAuthenticated && (
       <div className="w-[900px] flex flex-col justify-between h-screen p-4 border-l">
         <header>
           <nav className="flex justify-between gap-2">
@@ -143,7 +142,7 @@ export default function AIBar() {
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Button
-                    onClick={() => setMessages((prev) => [])}
+                    onClick={() => setMessages(() => [])}
                     size={"icon"}
                     variant={"ghost"}
                   >
@@ -155,7 +154,7 @@ export default function AIBar() {
                 </TooltipContent>
               </Tooltip>
 
-              <Button onClick={ToggleAI} size={"icon"} variant={"ghost"}>
+              <Button size={"icon"} variant={"ghost"}>
                 <X size={18} />
               </Button>
             </div>

@@ -1,7 +1,4 @@
-import { sessionSelectSchema } from "@/db/schema";
-import { z } from "zod/v4";
-
-export type Session = z.infer<typeof sessionSelectSchema>;
-export interface SessionWithToken extends Session {
+import { SessionSelectSchema } from "@/db/schema";
+export interface SessionWithToken extends SessionSelectSchema {
   token: string;
 }

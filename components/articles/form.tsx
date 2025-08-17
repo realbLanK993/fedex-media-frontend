@@ -23,11 +23,12 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { format } from "date-fns";
-import { CalendarIcon, Filter } from "lucide-react";
+import { CalendarIcon } from "lucide-react";
 import { useForm, ControllerRenderProps } from "react-hook-form";
 import { FormData } from "@/lib/types/article";
-import { useFilterStore } from "@/store/filterStore";
 import { SetStateAction } from "react";
+import { useAtom } from "jotai";
+import { filterAtom, isFilter } from "@/store/filterStore";
 
 export default function FilterBar({
   open,
@@ -36,20 +37,24 @@ export default function FilterBar({
   open: boolean;
   setOpen: React.Dispatch<SetStateAction<boolean>>;
 }) {
-  const addFilters = useFilterStore((state) => state.addFilter);
-  const filters = useFilterStore((state) => state.filters);
-  const changeFilters = useFilterStore((state) => state.changeFilters);
-  const enableFilter = useFilterStore((state) => state.enableFilter);
+  const [filters, setFilters] = useAtom(filterAtom);
+  const [, setFilterEnabled] = useAtom(isFilter);
   const form = useForm<FormData>({
     defaultValues: { ...filters },
   });
 
+  // useEffect(() => {
+  //   if(!filterEnabled){
+
+  //   }
+  // },[filterEnabled])
+
   const onSubmit = (data: FormData) => {
-    console.log("Form submitted:", data);
-    addFilters(data);
-    changeFilters(data);
-    enableFilter(true);
-    setOpen(false);
+    console.log("check", data);
+
+    setFilters({ ...data });
+    setFilterEnabled(true);
+    setOpen(!open);
   };
   return (
     <div className=" p-4">
@@ -152,7 +157,6 @@ export default function FilterBar({
             </div>
 
             <FormField
-              disabled
               control={form.control}
               name="country"
               render={({ field }) => (
@@ -195,8 +199,14 @@ export default function FilterBar({
                     <SelectContent>
                       <SelectItem value="all">All Sentiments</SelectItem>
                       <SelectItem value="positive">Positive</SelectItem>
+                      <SelectItem value="slightly positive">
+                        Slightly Positive
+                      </SelectItem>
                       <SelectItem value="neutral">Neutral</SelectItem>
                       <SelectItem value="negative">Negative</SelectItem>
+                      <SelectItem value="slightly negative">
+                        Slightly Negative
+                      </SelectItem>
                     </SelectContent>
                   </Select>
                 </FormItem>
