@@ -6,13 +6,15 @@ const seed = async () => {
   if (!process.argv[2]) {
     throw new Error("Provide password for the admin");
   }
-  const h = await hash(process.argv[3]);
+
+  const h = await hash(process.argv[2]);
   await db.insert(users).values({
-    name: "Admin",
-    email: "admin@gmail.com",
+    name: "Admin2",
+    email: "admin2@gmail.com",
     passwordHash: h,
     role: "ADMIN",
   });
+  console.log("Admin user created successfully!");
 };
 
 seed().catch((err) => {
