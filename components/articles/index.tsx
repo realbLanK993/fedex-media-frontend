@@ -13,9 +13,20 @@ import { toast } from "sonner";
 import EmptyState from "../ui/empty-state";
 import { getArticles } from "@/app/api-service";
 import { useAtom, useAtomValue } from "jotai";
-import ArticleCard from "./card";
+import ArticleCard, { LeaderDisplay } from "./card";
+import { Button } from "../ui/button";
+import { Input } from "../ui/input";
+import { Skeleton } from "../ui/skeleton";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "../ui/card";
+import Link from "next/link";
 
-// const ITEMS_PER_PAGE = 100;
+const ITEMS_PER_PAGE = 10;
 
 const ArticlesList = () => {
   const [currentPage, setCurrentPage] = React.useState<number | null>(null);
@@ -23,10 +34,10 @@ const ArticlesList = () => {
   const filteredData = useAtomValue(filteredArticleDataAtom);
   const filterEnabled = useAtomValue(isFilter);
   const targetElementRef = React.useRef<HTMLDivElement | null>(null);
-  // const minPage = 1;
-  // const maxPage = Math.floor(
-  //   filteredData ? filteredData.length / ITEMS_PER_PAGE : 1
-  // );
+  const minPage = 1;
+  const maxPage = Math.floor(
+    filteredData ? filteredData.length / ITEMS_PER_PAGE : 1
+  );
 
   React.useEffect(() => {
     if (!data) {
@@ -66,18 +77,75 @@ const ArticlesList = () => {
 
   return (
     <React.Fragment>
-      <ScrollArea className="flex flex-1 h-[calc(100vh-354px)]">
+      <ScrollArea className="flex flex-1 h-[calc(100vh-220px)]">
         <div ref={targetElementRef} />
         <div className="flex flex-col gap-4 w-full">
           {currentPage ? (
-            filteredData && filteredData.length > 0 ? (
+            data && data.length > 0 ? (
+              filteredData &&
               filteredData
-                // .slice(
-                //   (currentPage - 1) * ITEMS_PER_PAGE,
-                //   currentPage * ITEMS_PER_PAGE
-                // )
+                .slice(
+                  (currentPage - 1) * ITEMS_PER_PAGE,
+                  currentPage * ITEMS_PER_PAGE
+                )
                 .map((article, index) => (
-                  <ArticleCard key={index} article={article} />
+                  <Link
+                    key={index}
+                    href={article.hyperlink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group"
+                  >
+                    <Card className="hover:shadow-lg transition-shadow">
+                      <CardHeader>
+                        <div className="flex flex-col gap-2">
+                          <div className="flex w-full gap-2 justify-between">
+                            <small>{article.company.toLocaleUpperCase()}</small>
+                            <small className="text-primary">
+                              {article.sentiment.toLocaleUpperCase()}
+                            </small>
+                          </div>
+                          <CardTitle className="group-hover:underline">
+                            {article.headline}
+                          </CardTitle>
+                          <div className="flex gap-2 items-center">
+                            <CardDescription>
+                              {article.country ?? "India"}
+                            </CardDescription>
+                            <span className="w-1 h-1 bg-primary rounded-full" />
+                            <CardDescription>{article.outlet}</CardDescription>
+                            <span className="w-1 h-1 bg-primary rounded-full" />
+                            <CardDescription>{article.date}</CardDescription>
+                          </div>
+                        </div>
+                      </CardHeader>
+                      <CardContent>
+                        <p>{article.summary}</p>
+                        {((article.AMEA_Leader &&
+                          article.AMEA_Leader.toLowerCase() !== "none") ||
+                          (article.AMEA_Executive &&
+                            article.AMEA_Executive.toLowerCase() !== "none") ||
+                          (article.Local_Leaders &&
+                            article.Local_Leaders.toLowerCase() !==
+                              "none")) && (
+                          <div className="flex flex-col md:flex-row gap-4 mt-4">
+                            <LeaderDisplay
+                              label="AMEA Leader"
+                              name={article.AMEA_Leader ?? ""}
+                            />
+                            <LeaderDisplay
+                              label="AMEA Executive"
+                              name={article.AMEA_Executive ?? ""}
+                            />
+                            <LeaderDisplay
+                              label="Local Leaders"
+                              name={article.Local_Leaders ?? ""}
+                            />
+                          </div>
+                        )}
+                      </CardContent>
+                    </Card>
+                  </Link>
                 ))
             ) : filterEnabled ? (
               <EmptyState
@@ -103,10 +171,10 @@ const ArticlesList = () => {
           )}
         </div>
       </ScrollArea>
-      {/* <div className="flex flex-1 w-full h-full items-end justify-center p-2">
+      <div className="flex flex-1 w-full h-full items-end justify-center p-2">
         {currentPage ? (
-          filteredData &&
-          filteredData.length > ITEMS_PER_PAGE && (
+          data &&
+          data.length > ITEMS_PER_PAGE && (
             <div className="flex w-full gap-4 justify-center items-center">
               <Button
                 disabled={currentPage === minPage}
@@ -150,11 +218,11 @@ const ArticlesList = () => {
                       })
                     }
                     min={0}
-                    max={Math.floor(filteredData.length / ITEMS_PER_PAGE)}
+                    max={Math.floor(data.length / ITEMS_PER_PAGE)}
                     className="w-[60px] border-0 border-b-2 border-accent focus:ring-0 focus-visible:ring-0"
                   />
                 )}
-                <p>of {Math.floor(filteredData.length / ITEMS_PER_PAGE)}</p>
+                <p>of {Math.floor(data.length / ITEMS_PER_PAGE)}</p>
               </div>
               <Button
                 onClick={() => {
@@ -181,7 +249,7 @@ const ArticlesList = () => {
             <Skeleton className="px-4 w-16 h-10" />
           </div>
         )}
-      </div> */}
+      </div>
     </React.Fragment>
   );
 };

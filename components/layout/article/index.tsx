@@ -40,9 +40,11 @@ export default function ArticleNavbar() {
   const articleCount = useAtomValue(articleCountAtom);
   const [open, setOpen] = useState(false);
   const filterEnabled = useAtomValue(isFilter);
+  const setFilterEnabled = useSetAtom(isFilter);
   const data = useAtomValue(articleDataAtom);
   const clear = useSetAtom(filterAtom);
   const clearFilter = () => {
+    setFilterEnabled(false);
     clear({ ...defaultFilterValues });
   };
   const handleDownloadCsv = () => {

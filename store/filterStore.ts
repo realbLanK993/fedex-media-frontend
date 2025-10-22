@@ -169,6 +169,6 @@ const filterArticles = (d: Article[], filter: FormData) => {
 };
 
 export const articleCountAtom = atom((get) => {
-  const data = get(articleDataAtom);
+  const data = get(filteredArticleDataAtom);
   return data ? data.length : 0;
 });
