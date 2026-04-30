@@ -185,7 +185,7 @@ export default function AIPage() {
               </form>
             </div>
 
-            <div className="w-full mt-8 flex flex-col items-start gap-4">
+            {/* <div className="w-full mt-8 flex flex-col items-start gap-4">
               <p className="text-sm font-semibold text-foreground">
                 Example queries:
               </p>
@@ -202,7 +202,7 @@ export default function AIPage() {
                   </button>
                 ))}
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       ) : (
@@ -212,9 +212,8 @@ export default function AIPage() {
               {messages.map((msg) => (
                 <div
                   key={msg.id}
-                  className={`flex items-start gap-4 ${
-                    msg.sender === "user" ? "justify-end" : ""
-                  }`}
+                  className={`flex items-start gap-4 ${msg.sender === "user" ? "justify-end" : ""
+                    }`}
                 >
                   {msg.sender === "ai" && (
                     <Avatar className="h-8 w-8 border flex-shrink-0 mt-1">
@@ -225,11 +224,10 @@ export default function AIPage() {
                     </Avatar>
                   )}
                   <div
-                    className={`p-4 max-w-[85%] md:max-w-[75%] break-words rounded-xl ${
-                      msg.sender === "user"
+                    className={`p-4 max-w-[85%] md:max-w-[75%] break-words rounded-xl ${msg.sender === "user"
                         ? "bg-primary/10 text-foreground"
                         : "bg-muted/50 text-foreground"
-                    }`}
+                      }`}
                   >
                     <p className="text-sm leading-relaxed whitespace-pre-wrap">
                       {msg.text}
