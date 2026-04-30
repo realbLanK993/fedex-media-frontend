@@ -21,6 +21,8 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer";
 import { useState } from "react";
+import { CommandMenu } from "./command-menu";
+
 import { useAtomValue, useSetAtom } from "jotai";
 // import { isAuthenticatedAtom } from "@/store/authStore";
 import { defaultFilterValues, filterAtom, isFilter, briefingDateAtom } from "@/store/filterStore";
@@ -77,6 +79,7 @@ const FilterForm = () => {
 export default function Navbar() {
   // const [isAuthenticated, setIsAuthenticated] = useAtom(isAuthenticatedAtom);
   const [minified, setMinified] = useState(false);
+  const [commandOpen, setCommandOpen] = useState(false);
   const pathname = usePathname();
   // const ai = useAtomValue(aiAtom);
   // const setAI = useSetAtom(aiAtom);
@@ -97,11 +100,18 @@ export default function Navbar() {
       <header className="p-4 border-b w-full bg-background">
         <div className="flex justify-between w-full">
           <div className="flex gap-2 justify-start items-center w-full">
-            <input
-              className="border-l-4 border-l-primary px-2"
-              placeholder="Search"
-            />
-            <Search size={16} />
+            <button
+              onClick={() => setCommandOpen(true)}
+              className="flex gap-2 justify-start items-center cursor-pointer group"
+            >
+              <div className="border-l-4 border-l-primary px-2 text-muted-foreground group-hover:text-foreground transition-colors">
+                Search
+              </div>
+              <Search size={16} className="text-muted-foreground group-hover:text-foreground transition-colors" />
+              <kbd className="pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100 ml-2">
+                <span className="text-xs">⌘</span>K
+              </kbd>
+            </button>
           </div>
           <div>
             <Link href={"/dashboard/home"}>
@@ -129,11 +139,18 @@ export default function Navbar() {
     <header className="p-4 border-b h-[220px] top-0 bg-background">
       <div className="flex justify-between">
         <div className="flex gap-2 justify-start items-center">
-          <input
-            className="border-l-4 border-l-primary px-2"
-            placeholder="Search"
-          />
-          <Search size={16} />
+          <button
+            onClick={() => setCommandOpen(true)}
+            className="flex gap-2 justify-start items-center cursor-pointer group"
+          >
+            <div className="border-l-4 border-l-primary px-2 text-muted-foreground group-hover:text-foreground transition-colors">
+              Search
+            </div>
+            <Search size={16} className="text-muted-foreground group-hover:text-foreground transition-colors" />
+            <kbd className="pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100 ml-2">
+              <span className="text-xs">⌘</span>K
+            </kbd>
+          </button>
         </div>
         <div className="flex gap-2">
           <ThemeToggle />
@@ -194,6 +211,7 @@ export default function Navbar() {
           </div>
         )}
       </div>
+      <CommandMenu open={commandOpen} setOpen={setCommandOpen} />
     </header>
   );
 }

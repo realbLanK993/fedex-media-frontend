@@ -14,16 +14,14 @@ export default function FedExNewsletterPage() {
   }
 
   return (
-    <div className="flex flex-1 flex-col w-full h-[calc(100vh-140px)] bg-background">
-      <main className="flex-grow overflow-hidden">
-        {" "}
-        <iframe
-          src={newsletterUrl}
-          title="FedEx Newsletter"
-          className="w-full h-full border-0 prose"
-          sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
-        />
-      </main>
+    <div className="h-full bg-background">
+
+      <iframe
+        src={newsletterUrl}
+        title="FedEx Newsletter"
+        className="w-full h-full border-0"
+        sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
+      />
     </div>
   );
 }

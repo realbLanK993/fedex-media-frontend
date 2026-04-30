@@ -424,8 +424,8 @@ export default function AnalyticsPage() {
                         <h2 className="text-base font-semibold tracking-tight">Top Trending Tags</h2>
                       </div>
                       <div className="flex flex-wrap gap-2">
-                        {report.tags.map((tag) => (
-                          <div key={tag.tag} className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-secondary text-sm">
+                        {report.tags.map((tag, index) => (
+                          <div key={index} className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-secondary text-sm">
                             <span className="font-medium">{tag.tag}</span>
                             <span className="text-xs text-muted-foreground bg-background rounded-full px-1.5 py-0.5">{tag.count}</span>
                           </div>

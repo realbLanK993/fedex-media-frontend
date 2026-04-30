@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { getEntityArticles, EntityArticlesResponse } from "@/app/api-service";
 import { Loader2 } from "lucide-react";
@@ -9,6 +9,15 @@ import Link from "next/link";
 import CategoryNav from "@/components/layout/category-nav";
 import EmptyState from "@/components/ui/empty-state";
 import { Database } from "lucide-react";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
 
 export default function TopicPage() {
   const params = useParams();
@@ -17,6 +26,8 @@ export default function TopicPage() {
 
   const [data, setData] = useState<EntityArticlesResponse | null>(null);
   const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 9;
 
   useEffect(() => {
     if (!topic) {
@@ -38,10 +49,31 @@ export default function TopicPage() {
     fetchData();
   }, [topic, router]);
 
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [topic]);
+
+  const sortedArticles = useMemo(() => {
+    if (!data?.articles) return [];
+    
+    const parseDateString = (dateStr?: string) => {
+      if (!dateStr) return 0;
+      const cleanDateStr = dateStr.replace(/(\d+)(st|nd|rd|th)/, "$1");
+      const parsed = new Date(cleanDateStr).getTime();
+      return isNaN(parsed) ? 0 : parsed;
+    };
+
+    return [...data.articles].sort((a, b) => parseDateString(b.date) - parseDateString(a.date));
+  }, [data?.articles]);
+
+  const totalPages = Math.ceil(sortedArticles.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const currentArticles = sortedArticles.slice(startIndex, startIndex + itemsPerPage);
+
   return (
     <div className="flex flex-col w-full h-[calc(100vh-280px)]">
       <CategoryNav />
-      <div className="flex flex-col h-full overflow-hidden p-8">
+      <div className="flex flex-col h-full p-8">
         <h1 className="text-4xl font-light text-primary mb-8 leading-tight">
           Articles for "{topic}"
         </h1>
@@ -50,7 +82,7 @@ export default function TopicPage() {
           <div className="flex justify-center items-center h-full">
             <Loader2 className="animate-spin text-primary" size={32} />
           </div>
-        ) : !data || !data.articles || data.articles.length === 0 ? (
+        ) : !sortedArticles || sortedArticles.length === 0 ? (
           <div className="h-full flex justify-center items-center">
             <EmptyState
               icon={Database}
@@ -60,8 +92,8 @@ export default function TopicPage() {
           </div>
         ) : (
           <ScrollArea className="flex-1 pr-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {data.articles.map((article: any, index: number) => (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+              {currentArticles.map((article: any, index: number) => (
                 <Link
                   key={article.id ?? index}
                   href={`/dashboard/article/${article.id ?? index}`}
@@ -91,6 +123,68 @@ export default function TopicPage() {
                 </Link>
               ))}
             </div>
+
+            {totalPages > 1 && (
+              <div className="mt-8 mb-8">
+                <Pagination>
+                  <PaginationContent>
+                    <PaginationItem>
+                      <PaginationPrevious 
+                        href="#" 
+                        onClick={(e) => {
+                          e.preventDefault();
+                          if (currentPage > 1) setCurrentPage(currentPage - 1);
+                        }} 
+                        className={currentPage === 1 ? "pointer-events-none opacity-50" : ""}
+                      />
+                    </PaginationItem>
+                    
+                    {Array.from({ length: totalPages }).map((_, i) => {
+                      const page = i + 1;
+                      if (
+                        page === 1 || 
+                        page === totalPages || 
+                        (page >= currentPage - 1 && page <= currentPage + 1)
+                      ) {
+                        return (
+                          <PaginationItem key={page}>
+                            <PaginationLink 
+                              href="#" 
+                              onClick={(e) => {
+                                e.preventDefault();
+                                setCurrentPage(page);
+                              }} 
+                              isActive={currentPage === page}
+                            >
+                              {page}
+                            </PaginationLink>
+                          </PaginationItem>
+                        );
+                      }
+                      if (page === currentPage - 2 || page === currentPage + 2) {
+                        return (
+                          <PaginationItem key={page}>
+                            <PaginationEllipsis />
+                          </PaginationItem>
+                        );
+                      }
+                      return null;
+                    })}
+
+                    <PaginationItem>
+                      <PaginationNext 
+                        href="#" 
+                        onClick={(e) => {
+                          e.preventDefault();
+                          if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+                        }} 
+                        className={currentPage === totalPages ? "pointer-events-none opacity-50" : ""}
+                      />
+                    </PaginationItem>
+                  </PaginationContent>
+                </Pagination>
+              </div>
+            )}
           </ScrollArea>
         )}
       </div>

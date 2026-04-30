@@ -21,12 +21,12 @@ export default function CategoryNav() {
   return (
     <div className="w-full border-b bg-background">
       <div className="flex justify-between gap-6 p-4 overflow-x-auto whitespace-nowrap hide-scrollbar">
-        {categories.map((cat) => {
+        {categories.map((cat, index) => {
           const isActive = activeTopic === cat.entity_text;
           return (
             <Link
               href={`/dashboard/topics/${encodeURIComponent(cat.entity_text)}`}
-              key={cat.wikidata_id}
+              key={index}
               className={`text-sm font-semibold px-6 py-2 transition-colors inline-block ${isActive
                 ? "bg-[#5D1E89] text-white skew-x-[-10deg]"
                 : "text-primary hover:text-[#5D1E89]"

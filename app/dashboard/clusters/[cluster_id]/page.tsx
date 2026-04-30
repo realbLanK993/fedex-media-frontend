@@ -135,9 +135,9 @@ export default function ClusterPage() {
       <div className="flex flex-col md:flex-row h-full overflow-hidden">
         {/* Main Content */}
         <div className="w-full md:w-2/3 p-8 overflow-y-auto">
-          <h1 className="text-4xl font-light text-primary mb-8 leading-tight">
+          {/* <h1 className="text-4xl font-light text-primary mb-8 leading-tight">
             {cluster.title}
-          </h1>
+          </h1> */}
 
           <div className="flex flex-col gap-6 text-primary/80">
             <div
