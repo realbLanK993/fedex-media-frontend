@@ -124,31 +124,25 @@ const ClustersList = () => {
               className="group block"
             >
               <div className="flex flex-col bg-background hover:shadow-lg transition-shadow border mb-4 p-4 rounded-md">
-                <div className="flex justify-between items-start mb-2">
-                  <h3 className="group-hover:text-primary text-lg font-medium leading-tight">
-                    {cluster.title}
-                  </h3>
-                  <div className="flex flex-col items-end">
-                    <span className={`text-[10px] tracking-wider font-bold px-2 py-1 rounded-sm text-white ${
-                      cluster.sentiment?.toLowerCase() === 'positive' ? 'bg-green-600' : 
-                      cluster.sentiment?.toLowerCase() === 'negative' ? 'bg-red-600' : 'bg-gray-600'
-                    }`}>
+                <div
+                  className="prose prose-sm max-w-none text-gray-600 line-clamp-4 mb-3 text-justify [&_h2]:group-hover:text-primary [&_h2]:text-foreground [&_h2]:text-lg [&_h2]:font-medium [&_h2]:leading-tight [&_h2]:mt-0 [&_h2]:mb-2"
+                  dangerouslySetInnerHTML={{
+                    __html: cluster.summary
+                      ? cluster.summary.replace(/^```html\s*/i, "").replace(/^```\s*/i, "").replace(/```\s*$/i, "").trim()
+                      : ""
+                  }}
+                />
+
+                <div className="flex justify-between items-center text-xs text-gray-500 font-medium">
+                  <div className="flex justify-center items-center gap-2">
+                    <span className={`text-[10px] tracking-wider font-medium rounded-sm ${cluster.sentiment?.toLowerCase() === 'positive' ? 'text-green-600' :
+                      cluster.sentiment?.toLowerCase() === 'negative' ? 'text-red-600' : 'text-gray-600'
+                      }`}>
                       {cluster.sentiment?.toUpperCase() || 'NEUTRAL'}
                     </span>
+                    <div className="w-1 h-1 bg-gray-600 rounded-full" />
+                    <span>{cluster.article_count} Articles</span>
                   </div>
-                </div>
-                
-                <div 
-                  className="prose prose-sm max-w-none text-gray-600 line-clamp-3 mb-3 text-justify"
-                  dangerouslySetInnerHTML={{ 
-                    __html: cluster.summary 
-                      ? cluster.summary.replace(/^```html\s*/i, "").replace(/^```\s*/i, "").replace(/```\s*$/i, "").trim() 
-                      : "" 
-                  }} 
-                />
-                
-                <div className="flex justify-between items-center text-xs text-gray-500 font-medium">
-                  <span>{cluster.article_count} Articles</span>
                   <span>{cluster.created_at ? new Date(cluster.created_at).toLocaleDateString() : 'N/A'}</span>
                 </div>
               </div>

@@ -171,7 +171,7 @@ export default function Navbar() {
       <div className="flex justify-between">
         <div className="flex flex-col gap-2">
           <p className="text-primary text-sm">
-            {format(briefingDate, "EEEE, d MMMM yyyy")}
+            {/* {format(briefingDate, "EEEE, d MMMM yyyy")} */}
           </p>
 
 
