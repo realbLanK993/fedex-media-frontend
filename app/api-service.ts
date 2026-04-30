@@ -177,7 +177,7 @@ export const getDailyBriefing = async (date?: Date): Promise<DailyBriefingRespon
 
 
 
-export const getTopTags = async (limit: number = 20): Promise<TopTagItem[]> => {
+export const getTopTags = async (limit: number = 20): Promise<TopEntityItem[]> => {
   try {
     const res = await fetch(`${API_BASE_URL}/reports/top-entities?limit=${limit}`);
     if (!res.ok) {
