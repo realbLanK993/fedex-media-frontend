@@ -1,6 +1,6 @@
 import { db } from "@/db";
 import { sessions, users, UserSelectSchema } from "@/db/schema";
-import { verify } from "argon2";
+import { hash, verify } from "argon2";
 import { eq } from "drizzle-orm";
 import {
   createAndAssignToken,
@@ -19,6 +19,38 @@ type Variables = {
 };
 
 const auth = new Hono<{ Variables: Variables }>();
+
+auth.post("/register", async (c) => {
+  const { name, email, password } = await c.req.json<{
+    name: string;
+    email: string;
+    password: string;
+  }>()
+
+  if (!name || !email || !password) {
+    return c.text("Fill all fields before submitting", 400)
+  } else {
+    const user = await db.query.users.findFirst({
+      where: eq(users.email, email),
+    })
+    if (user) {
+      return c.text("User already exists", 400)
+    } else {
+      const hashedPassword = await hash(password)
+      const created = await db.insert(users).values({
+        name,
+        email,
+        passwordHash: hashedPassword,
+      })
+      if (created.lastInsertRowid) {
+        return c.text("User created successfully", 201)
+      } else {
+        return c.text("Something went wrong while trying to create user. Please try again.", 500)
+      }
+    }
+  }
+})
+
 
 auth
   .post("/login", async (c) => {

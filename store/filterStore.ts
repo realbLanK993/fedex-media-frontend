@@ -25,6 +25,8 @@ export const filteredArticleDataAtom = atom<null | Article[]>((get) => {
   return d ? filterArticles(d, f) : [];
 });
 export const isFilter = atom(false);
+export const briefingDateAtom = atom<Date>(new Date());
+
 
 // export const useFilterStore = create<FilterState>((set) => ({
 //   filters: defaultValues,

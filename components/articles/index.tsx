@@ -77,7 +77,7 @@ const ArticlesList = () => {
 
   return (
     <React.Fragment>
-      <ScrollArea className="flex flex-1 h-[calc(100vh-220px)]">
+      <ScrollArea className="flex flex-1 h-[calc(100vh-333px)]">
         <div ref={targetElementRef} />
         <div className="flex flex-col gap-4 w-full">
           {currentPage ? (
@@ -88,63 +88,30 @@ const ArticlesList = () => {
                   (currentPage - 1) * ITEMS_PER_PAGE,
                   currentPage * ITEMS_PER_PAGE
                 )
-                .map((article, index) => (
+                .map((article: any, index: number) => (
                   <Link
                     key={index}
-                    href={article.hyperlink}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group"
+                    href={`/dashboard/article/${article.id ?? ((currentPage - 1) * ITEMS_PER_PAGE + index)}`}
+                    className="group block"
                   >
-                    <Card className="hover:shadow-lg transition-shadow">
-                      <CardHeader>
-                        <div className="flex flex-col gap-2">
-                          <div className="flex w-full gap-2 justify-between">
-                            <small>{article.company.toLocaleUpperCase()}</small>
-                            <small className="text-primary">
-                              {article.sentiment.toLocaleUpperCase()}
-                            </small>
-                          </div>
-                          <CardTitle className="group-hover:underline">
-                            {article.headline}
-                          </CardTitle>
-                          <div className="flex gap-2 items-center">
-                            <CardDescription>
-                              {article.country ?? "India"}
-                            </CardDescription>
-                            <span className="w-1 h-1 bg-primary rounded-full" />
-                            <CardDescription>{article.outlet}</CardDescription>
-                            <span className="w-1 h-1 bg-primary rounded-full" />
-                            <CardDescription>{article.date}</CardDescription>
-                          </div>
+                    <div className="flex bg-background hover:shadow-lg transition-shadow border mb-6 h-40">
+                      <div className="bg-gray-200 w-1/3 min-w-[140px] max-w-[200px] h-full relative flex-shrink-0">
+                        <div className="absolute top-2 left-2 bg-red-600 text-white text-[10px] tracking-wider font-bold px-1.5 py-0.5 rounded-sm z-10">
+                          {article.outlet.substring(0, 3).toUpperCase()}
                         </div>
-                      </CardHeader>
-                      <CardContent>
-                        <p>{article.summary}</p>
-                        {((article.AMEA_Leader &&
-                          article.AMEA_Leader.toLowerCase() !== "none") ||
-                          (article.AMEA_Executive &&
-                            article.AMEA_Executive.toLowerCase() !== "none") ||
-                          (article.Local_Leaders &&
-                            article.Local_Leaders.toLowerCase() !==
-                              "none")) && (
-                          <div className="flex flex-col md:flex-row gap-4 mt-4">
-                            <LeaderDisplay
-                              label="AMEA Leader"
-                              name={article.AMEA_Leader ?? ""}
-                            />
-                            <LeaderDisplay
-                              label="AMEA Executive"
-                              name={article.AMEA_Executive ?? ""}
-                            />
-                            <LeaderDisplay
-                              label="Local Leaders"
-                              name={article.Local_Leaders ?? ""}
-                            />
-                          </div>
-                        )}
-                      </CardContent>
-                    </Card>
+                      </div>
+                      <div className="w-2/3 py-3 px-6 flex flex-col justify-between">
+                        <div className="flex flex-col gap-2">
+                          <small className="text-gray-500 font-medium">{article.company} • {article.country ?? "India"}</small>
+                          <h3 className="group-hover:text-primary text-xl font-medium leading-tight line-clamp-3">
+                            {article.headline}
+                          </h3>
+                        </div>
+                        <p className="text-gray-400 text-xs font-medium">
+                          {article.date}
+                        </p>
+                      </div>
+                    </div>
                   </Link>
                 ))
             ) : filterEnabled ? (

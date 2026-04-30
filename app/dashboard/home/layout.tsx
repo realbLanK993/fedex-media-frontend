@@ -24,22 +24,6 @@ export default function HomeLayout({
   ];
   return (
     <div>
-      {/* <SecondaryNavbar>
-        <div className="flex w-full justify-between">
-          {logisticsKeywords.map((keyword, index) => (
-            <button
-              key={index}
-              onClick={() => setSelected(index)}
-              className={`${
-                selected == index &&
-                "bg-primary text-primary-foreground  -skew-x-12"
-              } p-1 px-8 text-primary font-semibold cursor-pointer`}
-            >
-              {keyword.split("")[0].toUpperCase() + keyword.slice(1)}
-            </button>
-          ))}
-        </div>
-      </SecondaryNavbar> */}
       <main>{children}</main>
     </div>
   );

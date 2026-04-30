@@ -1,0 +1,3394 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "RAG API for Logistics Articles",
+    "description": "API for summarizing logistics-related topics, chatting, and managing database entries.",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/api/summarize": {
+      "get": {
+        "tags": [
+          "Chat and Summary"
+        ],
+        "summary": "Summarize Topic",
+        "operationId": "summarize_topic_api_summarize_get",
+        "parameters": [
+          {
+            "name": "topic",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The topic to summarize",
+              "title": "Topic"
+            },
+            "description": "The topic to summarize"
+          },
+          {
+            "name": "k",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 10,
+              "minimum": 1,
+              "description": "Number of documents to retrieve (1-10)",
+              "default": 8,
+              "title": "K"
+            },
+            "description": "Number of documents to retrieve (1-10)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SummaryResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/chat": {
+      "post": {
+        "tags": [
+          "Chat and Summary"
+        ],
+        "summary": "Chat",
+        "operationId": "chat_api_chat_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChatRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChatResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/topics": {
+      "get": {
+        "tags": [
+          "Database Management"
+        ],
+        "summary": "List Topics",
+        "operationId": "list_topics_api_topics_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/KeywordResponse"
+                  },
+                  "type": "array",
+                  "title": "Response List Topics Api Topics Get"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Database Management"
+        ],
+        "summary": "Add Topic",
+        "operationId": "add_topic_api_topics_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/KeywordRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/KeywordResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/topics/{topic_name}": {
+      "delete": {
+        "tags": [
+          "Database Management"
+        ],
+        "summary": "Delete Topic",
+        "operationId": "delete_topic_api_topics__topic_name__delete",
+        "parameters": [
+          {
+            "name": "topic_name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Topic Name"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/metrics": {
+      "get": {
+        "tags": [
+          "Database Management"
+        ],
+        "summary": "List Metrics",
+        "operationId": "list_metrics_api_metrics_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/KeywordResponse"
+                  },
+                  "type": "array",
+                  "title": "Response List Metrics Api Metrics Get"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Database Management"
+        ],
+        "summary": "Add Metric",
+        "operationId": "add_metric_api_metrics_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/KeywordRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/KeywordResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/metrics/{metric_name}": {
+      "delete": {
+        "tags": [
+          "Database Management"
+        ],
+        "summary": "Delete Metric",
+        "operationId": "delete_metric_api_metrics__metric_name__delete",
+        "parameters": [
+          {
+            "name": "metric_name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Metric Name"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/articles": {
+      "post": {
+        "tags": [
+          "Database Management"
+        ],
+        "summary": "Add Article Endpoint",
+        "operationId": "add_article_endpoint_api_articles_post",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ArticleRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ArticleResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Database Management"
+        ],
+        "summary": "List Articles",
+        "operationId": "list_articles_api_articles_get",
+        "parameters": [
+          {
+            "name": "topic",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Filter by topic keyword",
+              "title": "Topic"
+            },
+            "description": "Filter by topic keyword"
+          },
+          {
+            "name": "date_from",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Filter by date from (DD-MMM-YY)",
+              "title": "Date From"
+            },
+            "description": "Filter by date from (DD-MMM-YY)"
+          },
+          {
+            "name": "date_to",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Filter by date to (DD-MMM-YY)",
+              "title": "Date To"
+            },
+            "description": "Filter by date to (DD-MMM-YY)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ArticleResponse"
+                  },
+                  "title": "Response List Articles Api Articles Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/people": {
+      "get": {
+        "tags": [
+          "Database Management"
+        ],
+        "summary": "List People",
+        "operationId": "list_people_api_people_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/PersonResponse"
+                  },
+                  "type": "array",
+                  "title": "Response List People Api People Get"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Database Management"
+        ],
+        "summary": "Add Person Endpoint",
+        "operationId": "add_person_endpoint_api_people_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PersonRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PersonResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/people/{person_id}": {
+      "delete": {
+        "tags": [
+          "Database Management"
+        ],
+        "summary": "Delete Person",
+        "operationId": "delete_person_api_people__person_id__delete",
+        "parameters": [
+          {
+            "name": "person_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Person Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/email_groups": {
+      "get": {
+        "tags": [
+          "Database Management"
+        ],
+        "summary": "List Email Groups",
+        "operationId": "list_email_groups_api_email_groups_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/EmailGroupResponse"
+                  },
+                  "type": "array",
+                  "title": "Response List Email Groups Api Email Groups Get"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Database Management"
+        ],
+        "summary": "Add Email Group Endpoint",
+        "operationId": "add_email_group_endpoint_api_email_groups_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EmailGroupRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmailGroupResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/email_groups/{group_id}": {
+      "delete": {
+        "tags": [
+          "Database Management"
+        ],
+        "summary": "Delete Email Group",
+        "operationId": "delete_email_group_api_email_groups__group_id__delete",
+        "parameters": [
+          {
+            "name": "group_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Group Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/newsletter": {
+      "get": {
+        "tags": [
+          "Newsletter"
+        ],
+        "summary": "Get Fedex Newsletter Preview",
+        "operationId": "get_fedex_newsletter_preview_api_newsletter_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/newsletter/email": {
+      "post": {
+        "tags": [
+          "Newsletter"
+        ],
+        "summary": "Email Fedex Newsletter",
+        "operationId": "email_fedex_newsletter_api_newsletter_email_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewsletterRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NewsletterResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/reports/executive-summary": {
+      "post": {
+        "tags": [
+          "Reporting"
+        ],
+        "summary": "Generate a full executive summary",
+        "description": "Generates a text-based executive summary with quantitative and qualitative insights.",
+        "operationId": "get_executive_summary_api_reports_executive_summary_post",
+        "parameters": [
+          {
+            "name": "main_company",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "The primary company for the report.",
+              "default": "FedEx",
+              "title": "Main Company"
+            },
+            "description": "The primary company for the report."
+          },
+          {
+            "name": "competitors",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "List of all companies to include in analysis.",
+              "default": [
+                "FedEx",
+                "DHL",
+                "UPS",
+                "Aramex"
+              ],
+              "title": "Competitors"
+            },
+            "description": "List of all companies to include in analysis."
+          },
+          {
+            "name": "start_date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Start date (DD-MMM-YY)",
+              "default": "01-JUN-24",
+              "title": "Start Date"
+            },
+            "description": "Start date (DD-MMM-YY)"
+          },
+          {
+            "name": "end_date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "End date (DD-MMM-YY)",
+              "default": "31-AUG-24",
+              "title": "End Date"
+            },
+            "description": "End date (DD-MMM-YY)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/reports/visuals/sov-pie-chart": {
+      "get": {
+        "tags": [
+          "Reporting"
+        ],
+        "summary": "Generate a Share of Voice pie chart",
+        "description": "Generates a pie chart visual for Positive Weighted Share of Voice.\nRequires the `companies` query parameter.",
+        "operationId": "get_sov_pie_chart_api_reports_visuals_sov_pie_chart_get",
+        "parameters": [
+          {
+            "name": "main_company",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "The primary company to highlight.",
+              "default": "FedEx",
+              "title": "Main Company"
+            },
+            "description": "The primary company to highlight."
+          },
+          {
+            "name": "start_date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Start date (DD-MMM-YY)",
+              "title": "Start Date"
+            },
+            "description": "Start date (DD-MMM-YY)"
+          },
+          {
+            "name": "end_date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "End date (DD-MMM-YY)",
+              "title": "End Date"
+            },
+            "description": "End date (DD-MMM-YY)"
+          },
+          {
+            "name": "companies",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "List of companies to filter by",
+              "title": "Companies"
+            },
+            "description": "List of companies to filter by",
+            "example": [
+              "fedex"
+            ]
+          },
+          {
+            "name": "countries",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "List of countries to filter by",
+              "title": "Countries"
+            },
+            "description": "List of countries to filter by"
+          },
+          {
+            "name": "tags",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "List of tags to filter by (all must be present)",
+              "title": "Tags"
+            },
+            "description": "List of tags to filter by (all must be present)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/reports/visuals/sov-by-driver-chart": {
+      "get": {
+        "tags": [
+          "Reporting"
+        ],
+        "summary": "Generate a SOV by Business Driver bar chart",
+        "description": "Generates a stacked bar chart showing the Positive Weighted SOV breakdown\nby Business Reputation Driver for the specified competitors.\nRequires the `companies` query parameter.",
+        "operationId": "get_sov_by_driver_chart_api_reports_visuals_sov_by_driver_chart_get",
+        "parameters": [
+          {
+            "name": "start_date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Start date (DD-MMM-YY)",
+              "title": "Start Date"
+            },
+            "description": "Start date (DD-MMM-YY)"
+          },
+          {
+            "name": "end_date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "End date (DD-MMM-YY)",
+              "title": "End Date"
+            },
+            "description": "End date (DD-MMM-YY)"
+          },
+          {
+            "name": "companies",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "List of companies to filter by",
+              "title": "Companies"
+            },
+            "description": "List of companies to filter by",
+            "example": [
+              "fedex"
+            ]
+          },
+          {
+            "name": "countries",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "List of countries to filter by",
+              "title": "Countries"
+            },
+            "description": "List of countries to filter by"
+          },
+          {
+            "name": "tags",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "List of tags to filter by (all must be present)",
+              "title": "Tags"
+            },
+            "description": "List of tags to filter by (all must be present)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/reports/summary": {
+      "get": {
+        "tags": [
+          "Reporting"
+        ],
+        "summary": "Get high-level KPIs",
+        "description": "Calculates the primary Key Performance Indicators (KPIs) based on the provided filters:\n- **Share of Ink (SoI):** Total number of articles.\n- **Share of Voice (SoV):** Sum of the source ranking for all articles, indicating media influence.\n- **Total Social Shares:** Sum of all Facebook shares for the articles.",
+        "operationId": "get_kpi_summary_api_reports_summary_get",
+        "parameters": [
+          {
+            "name": "start_date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Start date (DD-MMM-YY)",
+              "title": "Start Date"
+            },
+            "description": "Start date (DD-MMM-YY)"
+          },
+          {
+            "name": "end_date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "End date (DD-MMM-YY)",
+              "title": "End Date"
+            },
+            "description": "End date (DD-MMM-YY)"
+          },
+          {
+            "name": "companies",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "List of companies to filter by",
+              "title": "Companies"
+            },
+            "description": "List of companies to filter by",
+            "example": [
+              "fedex"
+            ]
+          },
+          {
+            "name": "countries",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "List of countries to filter by",
+              "title": "Countries"
+            },
+            "description": "List of countries to filter by"
+          },
+          {
+            "name": "tags",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "List of tags to filter by (all must be present)",
+              "title": "Tags"
+            },
+            "description": "List of tags to filter by (all must be present)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/KPISummaryResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/reports/sov-competitive": {
+      "get": {
+        "tags": [
+          "Reporting"
+        ],
+        "summary": "Get competitive Share of Voice",
+        "description": "Provides a percentage-based breakdown of Share of Voice (SoV) among the specified competitors.\nRequires the `companies` query parameter.",
+        "operationId": "get_competitive_sov_api_reports_sov_competitive_get",
+        "parameters": [
+          {
+            "name": "start_date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Start date (DD-MMM-YY)",
+              "title": "Start Date"
+            },
+            "description": "Start date (DD-MMM-YY)"
+          },
+          {
+            "name": "end_date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "End date (DD-MMM-YY)",
+              "title": "End Date"
+            },
+            "description": "End date (DD-MMM-YY)"
+          },
+          {
+            "name": "companies",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "List of companies to filter by",
+              "title": "Companies"
+            },
+            "description": "List of companies to filter by",
+            "example": [
+              "fedex"
+            ]
+          },
+          {
+            "name": "countries",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "List of countries to filter by",
+              "title": "Countries"
+            },
+            "description": "List of countries to filter by"
+          },
+          {
+            "name": "tags",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "List of tags to filter by (all must be present)",
+              "title": "Tags"
+            },
+            "description": "List of tags to filter by (all must be present)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CompetitiveSOVItem"
+                  },
+                  "title": "Response Get Competitive Sov Api Reports Sov Competitive Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/reports/sov-by-driver": {
+      "get": {
+        "tags": [
+          "Reporting"
+        ],
+        "summary": "Get Share of Voice for a specific driver",
+        "description": "Calculates the Share of Voice for each company within a specific business driver (tag).\nRequires the `tag` query parameter.",
+        "operationId": "get_sov_by_driver_api_reports_sov_by_driver_get",
+        "parameters": [
+          {
+            "name": "tag",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The specific tag or driver to analyze",
+              "title": "Tag"
+            },
+            "description": "The specific tag or driver to analyze",
+            "example": "finance"
+          },
+          {
+            "name": "start_date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Start date (DD-MMM-YY)",
+              "title": "Start Date"
+            },
+            "description": "Start date (DD-MMM-YY)"
+          },
+          {
+            "name": "end_date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "End date (DD-MMM-YY)",
+              "title": "End Date"
+            },
+            "description": "End date (DD-MMM-YY)"
+          },
+          {
+            "name": "companies",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "List of companies to filter by",
+              "title": "Companies"
+            },
+            "description": "List of companies to filter by",
+            "example": [
+              "fedex"
+            ]
+          },
+          {
+            "name": "countries",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "List of countries to filter by",
+              "title": "Countries"
+            },
+            "description": "List of countries to filter by"
+          },
+          {
+            "name": "tags",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "List of tags to filter by (all must be present)",
+              "title": "Tags"
+            },
+            "description": "List of tags to filter by (all must be present)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SOVByDriverItem"
+                  },
+                  "title": "Response Get Sov By Driver Api Reports Sov By Driver Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/reports/top-headlines-by-competitor": {
+      "get": {
+        "tags": [
+          "Reporting"
+        ],
+        "summary": "Get the top headline for each competitor",
+        "description": "Finds the single most impactful headline for each specified competitor based on a\nweighted score of source rank and social shares. Requires the `companies` parameter.",
+        "operationId": "get_top_headlines_by_competitor_api_reports_top_headlines_by_competitor_get",
+        "parameters": [
+          {
+            "name": "start_date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Start date (DD-MMM-YY)",
+              "title": "Start Date"
+            },
+            "description": "Start date (DD-MMM-YY)"
+          },
+          {
+            "name": "end_date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "End date (DD-MMM-YY)",
+              "title": "End Date"
+            },
+            "description": "End date (DD-MMM-YY)"
+          },
+          {
+            "name": "companies",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "List of companies to filter by",
+              "title": "Companies"
+            },
+            "description": "List of companies to filter by",
+            "example": [
+              "fedex"
+            ]
+          },
+          {
+            "name": "countries",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "List of countries to filter by",
+              "title": "Countries"
+            },
+            "description": "List of countries to filter by"
+          },
+          {
+            "name": "tags",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "List of tags to filter by (all must be present)",
+              "title": "Tags"
+            },
+            "description": "List of tags to filter by (all must be present)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/reports/top-headlines": {
+      "get": {
+        "tags": [
+          "Reporting"
+        ],
+        "summary": "Get top impactful headlines",
+        "description": "Returns the most impactful headlines based on a weighted score of source rank and social shares.",
+        "operationId": "get_top_headlines_api_reports_top_headlines_get",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 50,
+              "minimum": 1,
+              "default": 10,
+              "title": "Limit"
+            }
+          },
+          {
+            "name": "start_date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Start date (DD-MMM-YY)",
+              "title": "Start Date"
+            },
+            "description": "Start date (DD-MMM-YY)"
+          },
+          {
+            "name": "end_date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "End date (DD-MMM-YY)",
+              "title": "End Date"
+            },
+            "description": "End date (DD-MMM-YY)"
+          },
+          {
+            "name": "companies",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "List of companies to filter by",
+              "title": "Companies"
+            },
+            "description": "List of companies to filter by",
+            "example": [
+              "fedex"
+            ]
+          },
+          {
+            "name": "countries",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "List of countries to filter by",
+              "title": "Countries"
+            },
+            "description": "List of countries to filter by"
+          },
+          {
+            "name": "tags",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "List of tags to filter by (all must be present)",
+              "title": "Tags"
+            },
+            "description": "List of tags to filter by (all must be present)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TopHeadlineItem"
+                  },
+                  "title": "Response Get Top Headlines Api Reports Top Headlines Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/reports/top-tags": {
+      "get": {
+        "tags": [
+          "Reporting"
+        ],
+        "summary": "Get most frequent tags",
+        "description": "Identifies the most frequently occurring tags in the filtered set of articles.",
+        "operationId": "get_top_tags_api_reports_top_tags_get",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
+              "default": 20,
+              "title": "Limit"
+            }
+          },
+          {
+            "name": "start_date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Start date (DD-MMM-YY)",
+              "title": "Start Date"
+            },
+            "description": "Start date (DD-MMM-YY)"
+          },
+          {
+            "name": "end_date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "End date (DD-MMM-YY)",
+              "title": "End Date"
+            },
+            "description": "End date (DD-MMM-YY)"
+          },
+          {
+            "name": "companies",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "List of companies to filter by",
+              "title": "Companies"
+            },
+            "description": "List of companies to filter by",
+            "example": [
+              "fedex"
+            ]
+          },
+          {
+            "name": "countries",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "List of countries to filter by",
+              "title": "Countries"
+            },
+            "description": "List of countries to filter by"
+          },
+          {
+            "name": "tags",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "List of tags to filter by (all must be present)",
+              "title": "Tags"
+            },
+            "description": "List of tags to filter by (all must be present)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TopTagItem"
+                  },
+                  "title": "Response Get Top Tags Api Reports Top Tags Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/reports/report/download": {
+      "get": {
+        "tags": [
+          "Reporting"
+        ],
+        "summary": "Generate and download a monthly PDF report for a country",
+        "description": "Generates a monthly, country-specific PDF report and returns it for download.",
+        "operationId": "download_monthly_country_report_api_reports_report_download_get",
+        "parameters": [
+          {
+            "name": "main_company",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Primary company for the report.",
+              "default": "FedEx",
+              "title": "Main Company"
+            },
+            "description": "Primary company for the report."
+          },
+          {
+            "name": "country",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Country to generate the report for.",
+              "default": "India",
+              "title": "Country"
+            },
+            "description": "Country to generate the report for."
+          },
+          {
+            "name": "month",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "pattern": "^\\d{4}-\\d{2}$",
+              "description": "Month for the report in YYYY-MM format.",
+              "default": "2025-10",
+              "title": "Month"
+            },
+            "description": "Month for the report in YYYY-MM format."
+          },
+          {
+            "name": "companies",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "List of companies for competitive analysis.",
+              "default": [
+                "FedEx",
+                "DHL",
+                "UPS",
+                "Aramex",
+                "Blue Dart"
+              ],
+              "title": "Companies"
+            },
+            "description": "List of companies for competitive analysis."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/briefing/daily": {
+      "get": {
+        "tags": [
+          "Daily Briefing"
+        ],
+        "summary": "Get Daily Briefing",
+        "description": "Generates a daily briefing by fetching articles for a specific date (or today),\nformatting them as context, and using the LLM to synthesize a report.",
+        "operationId": "get_daily_briefing_api_briefing_daily_get",
+        "parameters": [
+          {
+            "name": "date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Date in DD-MMM-YY format (e.g., 17-DEC-25). Defaults to today.",
+              "title": "Date"
+            },
+            "description": "Date in DD-MMM-YY format (e.g., 17-DEC-25). Defaults to today."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DailyBriefingResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/explore/clusters": {
+      "get": {
+        "tags": [
+          "Exploration"
+        ],
+        "summary": "List all story clusters",
+        "description": "Returns every story cluster, ordered by creation date (newest first).\nEach cluster groups articles about the same event or topic.",
+        "operationId": "list_clusters_api_explore_clusters_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/ClusterResponse"
+                  },
+                  "type": "array",
+                  "title": "Response List Clusters Api Explore Clusters Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/explore/clusters/{cluster_id}/articles": {
+      "get": {
+        "tags": [
+          "Exploration"
+        ],
+        "summary": "Get articles belonging to a cluster",
+        "description": "Returns the cluster metadata and all articles assigned to it,\nsorted by date descending.",
+        "operationId": "get_cluster_articles_api_explore_clusters__cluster_id__articles_get",
+        "parameters": [
+          {
+            "name": "cluster_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Cluster Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClusterArticlesResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/explore/clusters/{cluster_id}/topics": {
+      "get": {
+        "tags": [
+          "Exploration"
+        ],
+        "summary": "Get top 10 topics/entities mentioned in a cluster",
+        "description": "Returns the most-mentioned named entities (people, organisations,\nlocations, etc.) across all articles within the specified cluster,\nranked by mention count. Enriched with Wikipedia/Wikidata links when available.",
+        "operationId": "get_cluster_top_topics_api_explore_clusters__cluster_id__topics_get",
+        "parameters": [
+          {
+            "name": "cluster_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Cluster Id"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 50,
+              "minimum": 1,
+              "description": "Number of top topics to return",
+              "default": 10,
+              "title": "Limit"
+            },
+            "description": "Number of top topics to return"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClusterTopEntitiesResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/explore/briefing/{date}": {
+      "get": {
+        "tags": [
+          "Exploration"
+        ],
+        "summary": "Generate an LLM briefing for a specific date",
+        "description": "Given a date in DD-MMM-YY format (e.g. 17-DEC-25), fetch all articles\nfor that day and generate an LLM-synthesized intelligence briefing.",
+        "operationId": "get_briefing_for_date_api_explore_briefing__date__get",
+        "parameters": [
+          {
+            "name": "date",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Date"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DailyBriefingResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/explore/entities/top": {
+      "get": {
+        "tags": [
+          "Exploration"
+        ],
+        "summary": "Get top entities/topics mentioned on a given date",
+        "description": "Returns the most-mentioned named entities (people, organisations,\nlocations, etc.) across all articles published on the given date.\nEnriched with Wikipedia/Wikidata links when available.",
+        "operationId": "get_top_entities_api_explore_entities_top_get",
+        "parameters": [
+          {
+            "name": "date",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Date in DD-MMM-YY format (e.g. 17-DEC-25)",
+              "title": "Date"
+            },
+            "description": "Date in DD-MMM-YY format (e.g. 17-DEC-25)"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 50,
+              "minimum": 1,
+              "description": "Number of top entities to return",
+              "default": 10,
+              "title": "Limit"
+            },
+            "description": "Number of top entities to return"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TopEntitiesResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/explore/entities/{entity_text}/articles": {
+      "get": {
+        "tags": [
+          "Exploration"
+        ],
+        "summary": "Get all articles mentioning an entity, sorted by date",
+        "description": "Returns every article that mentions the given entity (case-insensitive),\nsorted by date descending.",
+        "operationId": "get_entity_articles_api_explore_entities__entity_text__articles_get",
+        "parameters": [
+          {
+            "name": "entity_text",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Entity Text"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EntityArticlesResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/explore/clusters/regenerate-summaries": {
+      "post": {
+        "tags": [
+          "Exploration"
+        ],
+        "summary": "Regenerate LLM summaries for all existing clusters",
+        "description": "One-time backfill endpoint. Iterates over every cluster in the database,\nfetches its articles, and regenerates the summary using the LLM.\nReplaces the old 'Aggregated event involving...' summaries.",
+        "operationId": "regenerate_cluster_summaries_api_explore_clusters_regenerate_summaries_post",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/health": {
+      "get": {
+        "summary": "Health Check",
+        "operationId": "health_check_health_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ArticleRequest": {
+        "properties": {
+          "hyperlink": {
+            "type": "string",
+            "title": "Hyperlink"
+          },
+          "headline": {
+            "type": "string",
+            "title": "Headline"
+          },
+          "summary": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Summary"
+          },
+          "text": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Text"
+          },
+          "date": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Date"
+          },
+          "quarter": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Quarter"
+          },
+          "company": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Company"
+          },
+          "country": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Country"
+          },
+          "outlet": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Outlet"
+          },
+          "media_type": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Media Type"
+          },
+          "headline_name_included": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Headline Name Included",
+            "default": false
+          },
+          "sentiment": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sentiment"
+          },
+          "financial_performance": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Financial Performance",
+            "default": 0
+          },
+          "innovation": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Innovation",
+            "default": 0
+          },
+          "regulatory": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Regulatory",
+            "default": 0
+          },
+          "environment_responsibility": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Environment Responsibility",
+            "default": 0
+          },
+          "social_responsibility": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Social Responsibility",
+            "default": 0
+          },
+          "community_responsibility": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Community Responsibility",
+            "default": 0
+          },
+          "e_commerce": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "E Commerce",
+            "default": 0
+          },
+          "global_leadership": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Global Leadership",
+            "default": 0
+          },
+          "executive_leadership": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Executive Leadership",
+            "default": 0
+          },
+          "business_leadership": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Business Leadership",
+            "default": 0
+          },
+          "keyword": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Keyword"
+          },
+          "relevancy_score": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Relevancy Score"
+          },
+          "source_rank": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Rank",
+            "default": 0
+          },
+          "social_shares": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Social Shares",
+            "default": 0
+          },
+          "tags": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Tags"
+          }
+        },
+        "type": "object",
+        "required": [
+          "hyperlink",
+          "headline"
+        ],
+        "title": "ArticleRequest"
+      },
+      "ArticleResponse": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "hyperlink": {
+            "type": "string",
+            "title": "Hyperlink"
+          },
+          "headline": {
+            "type": "string",
+            "title": "Headline"
+          },
+          "summary": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Summary"
+          },
+          "text": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Text"
+          },
+          "date": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Date"
+          },
+          "quarter": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Quarter"
+          },
+          "company": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Company"
+          },
+          "country": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Country"
+          },
+          "outlet": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Outlet"
+          },
+          "media_type": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Media Type"
+          },
+          "headline_name_included": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Headline Name Included"
+          },
+          "sentiment": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sentiment"
+          },
+          "financial_performance": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Financial Performance"
+          },
+          "innovation": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Innovation"
+          },
+          "regulatory": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Regulatory"
+          },
+          "environment_responsibility": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Environment Responsibility"
+          },
+          "social_responsibility": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Social Responsibility"
+          },
+          "community_responsibility": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Community Responsibility"
+          },
+          "e_commerce": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "E Commerce"
+          },
+          "global_leadership": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Global Leadership"
+          },
+          "executive_leadership": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Executive Leadership"
+          },
+          "business_leadership": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Business Leadership"
+          },
+          "keyword": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Keyword"
+          },
+          "relevancy_score": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Relevancy Score"
+          },
+          "source_rank": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Rank"
+          },
+          "social_shares": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Social Shares"
+          },
+          "tags": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Tags"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "hyperlink",
+          "headline",
+          "summary",
+          "text",
+          "date",
+          "quarter",
+          "company",
+          "country",
+          "outlet",
+          "media_type",
+          "headline_name_included",
+          "sentiment",
+          "financial_performance",
+          "innovation",
+          "regulatory",
+          "environment_responsibility",
+          "social_responsibility",
+          "community_responsibility",
+          "e_commerce",
+          "global_leadership",
+          "executive_leadership",
+          "business_leadership",
+          "keyword",
+          "relevancy_score",
+          "source_rank",
+          "social_shares",
+          "tags"
+        ],
+        "title": "ArticleResponse"
+      },
+      "BriefingSource": {
+        "properties": {
+          "headline": {
+            "type": "string",
+            "title": "Headline"
+          },
+          "url": {
+            "type": "string",
+            "title": "Url"
+          },
+          "outlet": {
+            "type": "string",
+            "title": "Outlet"
+          }
+        },
+        "type": "object",
+        "required": [
+          "headline",
+          "url",
+          "outlet"
+        ],
+        "title": "BriefingSource"
+      },
+      "ChatRequest": {
+        "properties": {
+          "user_id": {
+            "type": "string",
+            "title": "User Id"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message"
+          }
+        },
+        "type": "object",
+        "required": [
+          "user_id",
+          "message"
+        ],
+        "title": "ChatRequest"
+      },
+      "ChatResponse": {
+        "properties": {
+          "response": {
+            "type": "string",
+            "title": "Response"
+          },
+          "metadata": {
+            "items": {
+              "$ref": "#/components/schemas/Metadata"
+            },
+            "type": "array",
+            "title": "Metadata"
+          }
+        },
+        "type": "object",
+        "required": [
+          "response",
+          "metadata"
+        ],
+        "title": "ChatResponse"
+      },
+      "ClusterArticlesResponse": {
+        "properties": {
+          "cluster": {
+            "$ref": "#/components/schemas/ClusterResponse"
+          },
+          "articles": {
+            "items": {
+              "$ref": "#/components/schemas/ArticleResponse"
+            },
+            "type": "array",
+            "title": "Articles"
+          }
+        },
+        "type": "object",
+        "required": [
+          "cluster",
+          "articles"
+        ],
+        "title": "ClusterArticlesResponse"
+      },
+      "ClusterResponse": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "summary": {
+            "type": "string",
+            "title": "Summary"
+          },
+          "article_count": {
+            "type": "integer",
+            "title": "Article Count"
+          },
+          "sentiment": {
+            "type": "string",
+            "title": "Sentiment"
+          },
+          "created_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Created At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "title",
+          "summary",
+          "article_count",
+          "sentiment"
+        ],
+        "title": "ClusterResponse"
+      },
+      "ClusterTopEntitiesResponse": {
+        "properties": {
+          "cluster_id": {
+            "type": "integer",
+            "title": "Cluster Id"
+          },
+          "entities": {
+            "items": {
+              "$ref": "#/components/schemas/TopEntityItem"
+            },
+            "type": "array",
+            "title": "Entities"
+          }
+        },
+        "type": "object",
+        "required": [
+          "cluster_id",
+          "entities"
+        ],
+        "title": "ClusterTopEntitiesResponse"
+      },
+      "CompetitiveSOVItem": {
+        "properties": {
+          "company": {
+            "type": "string",
+            "title": "Company"
+          },
+          "share_of_voice": {
+            "type": "integer",
+            "title": "Share Of Voice"
+          },
+          "sov_percentage": {
+            "type": "number",
+            "title": "Sov Percentage"
+          }
+        },
+        "type": "object",
+        "required": [
+          "company",
+          "share_of_voice",
+          "sov_percentage"
+        ],
+        "title": "CompetitiveSOVItem"
+      },
+      "DailyBriefingResponse": {
+        "properties": {
+          "date": {
+            "type": "string",
+            "title": "Date"
+          },
+          "briefing_content": {
+            "type": "string",
+            "title": "Briefing Content"
+          },
+          "sources": {
+            "items": {
+              "$ref": "#/components/schemas/BriefingSource"
+            },
+            "type": "array",
+            "title": "Sources"
+          }
+        },
+        "type": "object",
+        "required": [
+          "date",
+          "briefing_content",
+          "sources"
+        ],
+        "title": "DailyBriefingResponse"
+      },
+      "EmailGroupRequest": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "person_ids": {
+            "items": {
+              "type": "integer"
+            },
+            "type": "array",
+            "title": "Person Ids"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "person_ids"
+        ],
+        "title": "EmailGroupRequest"
+      },
+      "EmailGroupResponse": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "person_ids": {
+            "items": {
+              "type": "integer"
+            },
+            "type": "array",
+            "title": "Person Ids"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "person_ids"
+        ],
+        "title": "EmailGroupResponse"
+      },
+      "EntityArticlesResponse": {
+        "properties": {
+          "entity_text": {
+            "type": "string",
+            "title": "Entity Text"
+          },
+          "articles": {
+            "items": {
+              "$ref": "#/components/schemas/ArticleResponse"
+            },
+            "type": "array",
+            "title": "Articles"
+          }
+        },
+        "type": "object",
+        "required": [
+          "entity_text",
+          "articles"
+        ],
+        "title": "EntityArticlesResponse"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "KPISummaryResponse": {
+        "properties": {
+          "share_of_ink": {
+            "type": "integer",
+            "title": "Share Of Ink"
+          },
+          "share_of_voice": {
+            "type": "integer",
+            "title": "Share Of Voice"
+          },
+          "total_social_shares": {
+            "type": "integer",
+            "title": "Total Social Shares"
+          }
+        },
+        "type": "object",
+        "required": [
+          "share_of_ink",
+          "share_of_voice",
+          "total_social_shares"
+        ],
+        "title": "KPISummaryResponse"
+      },
+      "KeywordRequest": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "keywords": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Keywords"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "keywords"
+        ],
+        "title": "KeywordRequest"
+      },
+      "KeywordResponse": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "keywords": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Keywords"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "keywords"
+        ],
+        "title": "KeywordResponse"
+      },
+      "Metadata": {
+        "properties": {
+          "url": {
+            "type": "string",
+            "title": "Url"
+          },
+          "outlet": {
+            "type": "string",
+            "title": "Outlet"
+          }
+        },
+        "type": "object",
+        "required": [
+          "url",
+          "outlet"
+        ],
+        "title": "Metadata"
+      },
+      "NewsletterRequest": {
+        "properties": {
+          "group_ids": {
+            "items": {
+              "type": "integer"
+            },
+            "type": "array",
+            "title": "Group Ids"
+          },
+          "person_ids": {
+            "items": {
+              "type": "integer"
+            },
+            "type": "array",
+            "title": "Person Ids"
+          }
+        },
+        "type": "object",
+        "required": [
+          "group_ids",
+          "person_ids"
+        ],
+        "title": "NewsletterRequest"
+      },
+      "NewsletterResponse": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message"
+          }
+        },
+        "type": "object",
+        "required": [
+          "status",
+          "message"
+        ],
+        "title": "NewsletterResponse"
+      },
+      "PersonRequest": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "title": "Email"
+          },
+          "designation": {
+            "type": "string",
+            "title": "Designation"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "email",
+          "designation"
+        ],
+        "title": "PersonRequest"
+      },
+      "PersonResponse": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "email": {
+            "type": "string",
+            "title": "Email"
+          },
+          "designation": {
+            "type": "string",
+            "title": "Designation"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "email",
+          "designation"
+        ],
+        "title": "PersonResponse"
+      },
+      "SOVByDriverItem": {
+        "properties": {
+          "company": {
+            "type": "string",
+            "title": "Company"
+          },
+          "share_of_voice": {
+            "type": "integer",
+            "title": "Share Of Voice"
+          }
+        },
+        "type": "object",
+        "required": [
+          "company",
+          "share_of_voice"
+        ],
+        "title": "SOVByDriverItem"
+      },
+      "SummaryResponse": {
+        "properties": {
+          "response": {
+            "type": "string",
+            "title": "Response"
+          },
+          "metadata": {
+            "items": {
+              "$ref": "#/components/schemas/Metadata"
+            },
+            "type": "array",
+            "title": "Metadata"
+          }
+        },
+        "type": "object",
+        "required": [
+          "response",
+          "metadata"
+        ],
+        "title": "SummaryResponse"
+      },
+      "TopEntitiesResponse": {
+        "properties": {
+          "date": {
+            "type": "string",
+            "title": "Date"
+          },
+          "entities": {
+            "items": {
+              "$ref": "#/components/schemas/TopEntityItem"
+            },
+            "type": "array",
+            "title": "Entities"
+          }
+        },
+        "type": "object",
+        "required": [
+          "date",
+          "entities"
+        ],
+        "title": "TopEntitiesResponse"
+      },
+      "TopEntityItem": {
+        "properties": {
+          "entity_text": {
+            "type": "string",
+            "title": "Entity Text"
+          },
+          "entity_label": {
+            "type": "string",
+            "title": "Entity Label"
+          },
+          "mention_count": {
+            "type": "integer",
+            "title": "Mention Count"
+          },
+          "wikipedia_title": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Wikipedia Title"
+          },
+          "wikidata_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Wikidata Id"
+          }
+        },
+        "type": "object",
+        "required": [
+          "entity_text",
+          "entity_label",
+          "mention_count"
+        ],
+        "title": "TopEntityItem"
+      },
+      "TopHeadlineItem": {
+        "properties": {
+          "headline": {
+            "type": "string",
+            "title": "Headline"
+          },
+          "hyperlink": {
+            "type": "string",
+            "title": "Hyperlink"
+          },
+          "outlet": {
+            "type": "string",
+            "title": "Outlet"
+          },
+          "score": {
+            "type": "number",
+            "title": "Score"
+          }
+        },
+        "type": "object",
+        "required": [
+          "headline",
+          "hyperlink",
+          "outlet",
+          "score"
+        ],
+        "title": "TopHeadlineItem"
+      },
+      "TopTagItem": {
+        "properties": {
+          "tag": {
+            "type": "string",
+            "title": "Tag"
+          },
+          "count": {
+            "type": "integer",
+            "title": "Count"
+          }
+        },
+        "type": "object",
+        "required": [
+          "tag",
+          "count"
+        ],
+        "title": "TopTagItem"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    }
+  }
+}

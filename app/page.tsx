@@ -19,12 +19,12 @@ export default function Home() {
 
   if (!message) return <p>Loading...</p>
 
-  return <div className='flex flex-col gap-4 items-center justify-center h-[calc(100vh-220px)]'>
+  return <div className='flex flex-col gap-4 items-center justify-center h-[calc(100vh-330px)]'>
     <p>{message}</p>
     <Link href={link!}>
-    <Button>
-    Go to dashboard
-    </Button>
+      <Button>
+        Go to dashboard
+      </Button>
     </Link>
   </div>
 }

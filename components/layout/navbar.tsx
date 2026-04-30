@@ -23,8 +23,18 @@ import {
 import { useState } from "react";
 import { useAtomValue, useSetAtom } from "jotai";
 // import { isAuthenticatedAtom } from "@/store/authStore";
-import { defaultFilterValues, filterAtom, isFilter } from "@/store/filterStore";
+import { defaultFilterValues, filterAtom, isFilter, briefingDateAtom } from "@/store/filterStore";
 import FilterBar from "../articles/form";
+import { usePathname } from "next/navigation";
+import { format } from "date-fns";
+
+
+
+/** Pages where the global filter panel should be hidden */
+const FILTER_HIDDEN_PATHS = [
+  "/dashboard/clusters/",
+  "/dashboard/article/",
+];
 
 const FilterForm = () => {
   const filterEnabled = useAtomValue(isFilter);
@@ -63,16 +73,26 @@ const FilterForm = () => {
   );
 };
 
+
 export default function Navbar() {
   // const [isAuthenticated, setIsAuthenticated] = useAtom(isAuthenticatedAtom);
   const [minified, setMinified] = useState(false);
-  // const onLogout = async () => {
-  //   await fetch("/api/auth/logout", {
-  //     method: "POST",
-  //   });
-  //   setIsAuthenticated(false);
-  // };
+  const pathname = usePathname();
+  // const ai = useAtomValue(aiAtom);
+  // const setAI = useSetAtom(aiAtom);
+  const currentPage = (url: string) => {
+    if (url.includes(pathname)) {
+      return "font-bold"
+    }
+    return ""
+  }
+
+  const showFilter = !FILTER_HIDDEN_PATHS.some((p) => pathname.startsWith(p));
+
+  const briefingDate = useAtomValue(briefingDateAtom);
+
   if (minified) {
+
     return (
       <header className="p-4 border-b w-full bg-background">
         <div className="flex justify-between w-full">
@@ -106,7 +126,7 @@ export default function Navbar() {
     );
   }
   return (
-    <header className="p-4 border-b h-[220px] sticky top-0 bg-background">
+    <header className="p-4 border-b h-[220px] top-0 bg-background">
       <div className="flex justify-between">
         <div className="flex gap-2 justify-start items-center">
           <input
@@ -126,22 +146,22 @@ export default function Navbar() {
       <nav className="flex w-full justify-center">
         <ul className="flex gap-8 w-full justify-between text-lg font-light items-center max-w-7xl">
           <li>
-            <Link className="font-bold " href="/dashboard/home">
+            <Link className={currentPage("/dashboard/home")} href="/dashboard/home">
               HOME
             </Link>
           </li>
           <li>
-            <Link href="/dashboard/analytics">ANALYTICS</Link>
+            <Link className={currentPage("/dashboard/analytics")} href="/dashboard/analytics">ANALYTICS</Link>
           </li>
           <li className="flex flex-col gap-1">
             <Image src={"/logo.png"} width={160} height={160} alt="logo" />
             <span className="text-xl font-light">Media Presence</span>
           </li>
           <li>
-            <Link href="/dashboard/newsletter">NEWSLETTER</Link>
+            <Link className={currentPage("/dashboard/newsletter")} href="/dashboard/newsletter">NEWSLETTER</Link>
           </li>
           <li>
-            <Link className="flex gap-2 items-center" href="/dashboard/ai">
+            <Link href="/dashboard/ai" className={`${currentPage("/dashboard/ai")} flex gap-2 items-center`}>
               <Sparkles size={16} />
               <span>ASK AI</span>
             </Link>
@@ -151,29 +171,28 @@ export default function Navbar() {
       <div className="flex justify-between">
         <div className="flex flex-col gap-2">
           <p className="text-primary text-sm">
-            {new Date().toLocaleString("default", {
-              weekday: "long",
-              month: "long",
-              day: "numeric",
-              year: "numeric",
-            })}
+            {format(briefingDate, "EEEE, d MMMM yyyy")}
           </p>
+
+
           <p>
             <PaperSelect />
           </p>
         </div>
-        <div className="flex flex-col gap-2">
-          <Link
-            href={"/dashboard/settings"}
-            className="flex justify-end text-secondary items-center gap-2 text-sm"
-          >
-            <Settings size={16} /> Settings
-          </Link>
-          <button className="flex gap-2 justify-end items-center cursor-pointer">
-            <ListFilter size={16} />
-            <FilterForm />
-          </button>
-        </div>
+        {showFilter && (
+          <div className="flex flex-col gap-2">
+            <Link
+              href={"/dashboard/settings"}
+              className="flex justify-end text-secondary items-center gap-2 text-sm"
+            >
+              <Settings size={16} /> Settings
+            </Link>
+            <button className="flex gap-2 justify-end items-center cursor-pointer">
+              <ListFilter size={16} />
+              <FilterForm />
+            </button>
+          </div>
+        )}
       </div>
     </header>
   );
