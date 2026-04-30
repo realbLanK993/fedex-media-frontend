@@ -15,6 +15,9 @@ export const defaultFilterValues: FormData = {
   socialResponsibility: false,
   communityResponsibility: false,
   eCommerce: false,
+  globalLeadership: false,
+  executiveLeadership: false,
+  businessLeadership: false,
 };
 
 export const filterAtom = atomWithImmer<FormData>(defaultFilterValues);
@@ -163,6 +166,27 @@ const filterArticles = (d: Article[], filter: FormData) => {
       .filter((article) => {
         if (filter.communityResponsibility) {
           return article.community_responsibility;
+        } else {
+          return article;
+        }
+      })
+      .filter((article) => {
+        if (filter.globalLeadership) {
+          return article.global_leadership;
+        } else {
+          return article;
+        }
+      })
+      .filter((article) => {
+        if (filter.executiveLeadership) {
+          return article.executive_leadership;
+        } else {
+          return article;
+        }
+      })
+      .filter((article) => {
+        if (filter.businessLeadership) {
+          return article.business_leadership;
         } else {
           return article;
         }

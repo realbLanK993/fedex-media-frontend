@@ -28,6 +28,16 @@ export interface ClusterResponse {
   article_count: number;
   sentiment: string;
   created_at: string | null;
+  financial_performance: number;
+  innovation: number;
+  regulatory: number;
+  environment_responsibility: number;
+  social_responsibility: number;
+  community_responsibility: number;
+  e_commerce: number;
+  global_leadership: number;
+  executive_leadership: number;
+  business_leadership: number;
 }
 
 export interface BriefingSource {
@@ -112,9 +122,14 @@ export const getGroupData: (
   return (await response.json()) as NewsletterGroups[];
 };
 
-export const getClusters = async (): Promise<ClusterResponse[]> => {
+export const getClusters = async (date?: Date): Promise<ClusterResponse[]> => {
   try {
-    const res = await fetch(API_BASE_URL + "/explore/clusters");
+    let url = API_BASE_URL + "/explore/clusters";
+    if (date) {
+      const dateStr = format(date, "dd-MMM-yy").toUpperCase();
+      url = API_BASE_URL + `/explore/clusters/date/${dateStr}`;
+    }
+    const res = await fetch(url);
     if (!res.ok) {
       console.error("Failed to fetch clusters");
       return [];

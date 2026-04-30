@@ -11,7 +11,7 @@ export default function CategoryNav() {
   const activeTopic = params?.topic ? decodeURIComponent(params.topic as string) : "";
 
   useEffect(() => {
-    getTopTags(11).then(tags => {
+    getTopTags(10).then(tags => {
       if (tags) {
         setCategories(tags);
       }
@@ -20,7 +20,7 @@ export default function CategoryNav() {
 
   return (
     <div className="w-full border-b bg-background">
-      <div className="flex gap-6 p-4 overflow-x-auto whitespace-nowrap hide-scrollbar">
+      <div className="flex justify-between gap-6 p-4 overflow-x-auto whitespace-nowrap hide-scrollbar">
         {categories.map((cat) => {
           const isActive = activeTopic === cat.entity_text;
           return (

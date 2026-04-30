@@ -24,6 +24,9 @@ export const ArticleSchema = z.object({
   social_responsibility: z.union([z.literal(0), z.literal(1)]),
   community_responsibility: z.union([z.literal(0), z.literal(1)]),
   e_commerce: z.union([z.literal(0), z.literal(1)]),
+  global_leadership: z.union([z.literal(0), z.literal(1)]).optional(),
+  executive_leadership: z.union([z.literal(0), z.literal(1)]).optional(),
+  business_leadership: z.union([z.literal(0), z.literal(1)]).optional(),
   summary: z.string(),
   source: z.string(),
   keyword: z.string(),
@@ -48,6 +51,9 @@ export const FormDataSchema = z.object({
   socialResponsibility: z.boolean(),
   communityResponsibility: z.boolean(),
   eCommerce: z.boolean(),
+  globalLeadership: z.boolean(),
+  executiveLeadership: z.boolean(),
+  businessLeadership: z.boolean(),
 });
 
 export const FilterStateSchema = z.object({

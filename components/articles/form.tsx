@@ -231,6 +231,9 @@ export default function FilterBar({
               label: "Community Responsibility",
             },
             { id: "eCommerce", label: "E Commerce" },
+            { id: "globalLeadership", label: "Global Leadership" },
+            { id: "executiveLeadership", label: "Executive Leadership" },
+            { id: "businessLeadership", label: "Business Leadership" },
           ].map(({ id, label }) => (
             <FormField
               key={id}

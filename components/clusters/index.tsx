@@ -9,7 +9,7 @@ import { getClusters, ClusterResponse } from "@/app/api-service";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { useAtomValue } from "jotai";
-import { filterAtom } from "@/store/filterStore";
+import { filterAtom, briefingDateAtom } from "@/store/filterStore";
 
 const filterClusters = (clusters: ClusterResponse[], filter: any) => {
   return clusters
@@ -44,16 +44,29 @@ const filterClusters = (clusters: ClusterResponse[], filter: any) => {
       } catch (err) {
         return true;
       }
-    });
+    })
+    // Attributes
+    .filter((cluster) => filter.financialPerformance ? cluster.financial_performance : true)
+    .filter((cluster) => filter.innovation ? cluster.innovation : true)
+    .filter((cluster) => filter.regulatory ? cluster.regulatory : true)
+    .filter((cluster) => filter.environmentResponsibility ? cluster.environment_responsibility : true)
+    .filter((cluster) => filter.socialResponsibility ? cluster.social_responsibility : true)
+    .filter((cluster) => filter.communityResponsibility ? cluster.community_responsibility : true)
+    .filter((cluster) => filter.eCommerce ? cluster.e_commerce : true)
+    .filter((cluster) => filter.globalLeadership ? cluster.global_leadership : true)
+    .filter((cluster) => filter.executiveLeadership ? cluster.executive_leadership : true)
+    .filter((cluster) => filter.businessLeadership ? cluster.business_leadership : true);
 };
 
 const ClustersList = () => {
   const [clusters, setClusters] = React.useState<ClusterResponse[] | null>(null);
   const [loading, setLoading] = React.useState(true);
   const filter = useAtomValue(filterAtom);
+  const briefingDate = useAtomValue(briefingDateAtom);
 
   React.useEffect(() => {
-    getClusters()
+    setLoading(true);
+    getClusters(briefingDate)
       .then((res) => {
         setClusters(res);
         setLoading(false);
@@ -63,7 +76,7 @@ const ClustersList = () => {
         toast.error("Error when fetching clusters");
         setLoading(false);
       });
-  }, []);
+  }, [briefingDate]);
 
   if (loading) {
     return (
