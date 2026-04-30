@@ -101,7 +101,7 @@ async function fetchTopHeadlines(): Promise<TopHeadline[]> {
 }
 
 async function fetchTopTags(): Promise<TopTag[]> {
-  return fetchApi("/reports/top-tags", {}, { limit: "12", companies: COMPETITORS });
+  return fetchApi("/reports/top-entities", {}, { limit: "12", companies: COMPETITORS });
 }
 
 async function fetchSOVCompetitive(): Promise<CompetitiveSOV[]> {
