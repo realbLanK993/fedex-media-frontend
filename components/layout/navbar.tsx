@@ -195,20 +195,16 @@ export default function Navbar() {
           <p>
             <PaperSelect />
           </p>
+
+
         </div>
         {showFilter && (
           <div className="flex flex-col gap-2">
-            <Link
-              href={"/dashboard/settings"}
-              className="flex justify-end text-secondary items-center gap-2 text-sm"
-            >
-              <Settings size={16} /> Settings
-            </Link>
-            <button className="flex gap-2 justify-end items-center cursor-pointer">
+ <button className="flex gap-2 p-2 px-4 bg-accent justify-start items-center cursor-pointer">
               <ListFilter size={16} />
               <FilterForm />
             </button>
-          </div>
+                                 </div>
         )}
       </div>
       <CommandMenu open={commandOpen} setOpen={setCommandOpen} />

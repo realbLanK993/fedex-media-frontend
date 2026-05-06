@@ -135,7 +135,7 @@ const ClustersList = () => {
 
                 <div className="flex justify-between items-center text-xs text-gray-500 font-medium">
                   <div className="flex justify-center items-center gap-2">
-                    <span className={`text-[10px] tracking-wider font-medium rounded-sm ${cluster.sentiment?.toLowerCase() === 'positive' ? 'text-green-600' :
+                    <span className={`text-[10px] bg-accent p-2 px-4 tracking-wider font-medium rounded-sm ${cluster.sentiment?.toLowerCase() === 'positive' ? 'text-green-600' :
                       cluster.sentiment?.toLowerCase() === 'negative' ? 'text-red-600' : 'text-gray-600'
                       }`}>
                       {cluster.sentiment?.toUpperCase() || 'NEUTRAL'}

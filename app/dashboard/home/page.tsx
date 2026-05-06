@@ -17,7 +17,7 @@ export default function Dashboard() {
             <DailyBriefing />
           </div>
           <div className="h-full overflow-hidden flex flex-col">
-            {/* <h2 className="text-3xl font-light text-primary">Clustered Articles</h2> */}
+            <h2 className="text-3xl font-light text-primary">Key Discussions</h2>
             <ClustersList />
           </div>
         </div>

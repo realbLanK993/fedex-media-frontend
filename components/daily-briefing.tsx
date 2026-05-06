@@ -35,7 +35,7 @@ export default function DailyBriefing() {
     return (
       <div className="flex flex-col gap-6 p-4 md:pr-6 h-full items-center justify-center">
         <Loader2 className="animate-spin h-8 w-8 text-primary" />
-        <p>Loading daily briefing...</p>
+        <p>Loading latest briefing...</p>
       </div>
     );
   }
@@ -43,7 +43,7 @@ export default function DailyBriefing() {
   if (!briefing) {
     return (
       <div className="flex flex-col gap-6 p-4 md:pr-6 h-full">
-        <h2 className="text-3xl font-light text-primary">Daily Briefing</h2>
+        <h2 className="text-3xl font-light text-primary">Latest Brief</h2>
         <p className="text-sm text-primary/80">No briefing available today.</p>
       </div>
     );
@@ -51,7 +51,7 @@ export default function DailyBriefing() {
 
   return (
     <div className="flex flex-col gap-6 p-4 md:pr-6 h-full">
-      <h2 className="text-3xl font-light text-primary">Daily Briefing</h2>
+      <h2 className="text-3xl font-light text-primary">Latest Briefing</h2>
 
       <ScrollArea className="flex-1 pr-4">
         <div className="flex flex-col gap-4 h-[300px]">
