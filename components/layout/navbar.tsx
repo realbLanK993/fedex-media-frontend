@@ -49,13 +49,13 @@ const FilterForm = () => {
   return (
     <Drawer open={open} onOpenChange={setOpen} direction="left">
       <DrawerTrigger asChild>
-        <p>Global Filter</p>
+        <p>{"Search & Filter"}</p>
       </DrawerTrigger>
 
       <DrawerContent className="overflow-y-scroll w-fit">
         <DrawerHeader className="flex gap-2 flex-row justify-between">
           <DrawerTitle className="text-2xl font-light ">
-            Global Filter
+            {"Search & Filter"}
           </DrawerTitle>
           {filterEnabled && (
             <Button
