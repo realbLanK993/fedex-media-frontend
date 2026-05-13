@@ -198,9 +198,6 @@ export default function ClusterPage() {
                         </div>
                         <div className="w-3/4 py-3 px-4 flex flex-col justify-between">
                           <div className="flex flex-col gap-1">
-                            <small className="text-gray-500 font-medium">
-                              {article.company} • {article.country ?? "India"}
-                            </small>
                             <h3 className="group-hover:text-primary text-md font-medium leading-tight line-clamp-2">
                               {article.headline}
                             </h3>
