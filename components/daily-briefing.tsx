@@ -82,9 +82,6 @@ export default function DailyBriefing() {
         </div>
       </ScrollArea>
 
-      <Button className="w-full bg-[#5D1E89] hover:bg-[#4a1770] text-white py-6 mt-auto">
-        Know More
-      </Button>
     </div>
   );
 }
