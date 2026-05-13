@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import {TopEntityItem} from "@app/api-service.ts"
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_RAG_API_URL;
 
@@ -43,10 +44,7 @@ interface TopHeadline {
   score: number;
 }
 
-interface TopTag {
-  tag: string;
-  count: number;
-}
+
 
 interface CompetitiveSOV {
   company: string;
@@ -100,7 +98,7 @@ async function fetchTopHeadlines(): Promise<TopHeadline[]> {
   return fetchApi("/reports/top-headlines", {}, { limit: "5", companies: COMPETITORS });
 }
 
-async function fetchTopTags(): Promise<TopTag[]> {
+async function fetchTopTags(): Promise<TopEntityItem[]> {
   return fetchApi("/reports/top-entities", {}, { limit: "12", companies: COMPETITORS });
 }
 
@@ -404,7 +402,7 @@ export default function AnalyticsPage() {
                               <span className="font-medium">{item.company}</span>
                               <span className="text-muted-foreground">{item.sov_percentage}%</span>
                             </div>
-                            <div className="h-2 w-full bg-secondary rounded-full overflow-hidden">
+                            <div className="h-2 w-full bg-accent rounded-full overflow-hidden">
                               <div
                                 className={`h-full ${COMPANY_COLORS[item.company] || "bg-primary"}`}
                                 style={{ width: `${item.sov_percentage}%` }}
@@ -425,9 +423,9 @@ export default function AnalyticsPage() {
                       </div>
                       <div className="flex flex-wrap gap-2">
                         {report.tags.map((tag, index) => (
-                          <div key={index} className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-secondary text-sm">
-                            <span className="font-medium">{tag.tag}</span>
-                            <span className="text-xs text-muted-foreground bg-background rounded-full px-1.5 py-0.5">{tag.count}</span>
+                          <div key={index} className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-accent text-sm">
+                            <span className="font-medium">{tag.entity_text}</span>
+                            <span className="text-xs text-muted-foreground bg-background rounded-full px-1.5 py-0.5">{tag.mention_count}</span>
                           </div>
                         ))}
                       </div>
@@ -454,7 +452,7 @@ export default function AnalyticsPage() {
                             {headline.headline}
                           </a>
                           <div className="flex items-center gap-3 text-xs text-muted-foreground">
-                            <span className="font-semibold px-2 py-0.5 bg-secondary rounded-md">{headline.outlet}</span>
+                            <span className="font-semibold px-2 py-0.5 bg-accent rounded-md">{headline.outlet}</span>
                             <span>Score: {formatNumber(Math.round(headline.score))}</span>
                           </div>
                         </div>
