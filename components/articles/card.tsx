@@ -32,10 +32,10 @@ export default function ArticleCard({ article }: { article: Article }) {
         />
         <div className="w-full">
           <div className="text-sm ">
-            <span>{article.company}</span>
+            {/* <span>{article.company}</span> */}
             {/* centerdot html code below */}
             <span className="mx-1"> &bull; </span>
-            <span> {article.outlet} </span>
+            {/* <span> {article.outlet} </span> */}
           </div>
           <p className="text-xl font-light">{article.headline}</p>
         </div>

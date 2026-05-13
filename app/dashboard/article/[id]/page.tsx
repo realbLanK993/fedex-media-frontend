@@ -153,16 +153,9 @@ function ArticlePageInner() {
             {article.headline}
           </h1>
           <div className="flex items-center gap-3 text-sm text-gray-400 mb-8 flex-wrap">
-            {article.company && <span>{article.company}</span>}
-            {article.country && (
-              <>
-                <span>·</span>
-                <span>{article.country}</span>
-              </>
-            )}
+            
             {article.date && (
               <>
-                <span>·</span>
                 <span>{article.date}</span>
               </>
             )}

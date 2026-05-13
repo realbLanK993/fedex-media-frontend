@@ -109,9 +109,7 @@ export default function TopicPage() {
                       </small>
                     </div>
                     <div className="p-4 flex flex-col flex-grow">
-                      <small className="text-gray-500 font-medium mb-2 block">
-                        {article.company} • {article.country ?? "India"}
-                      </small>
+                         
                       <h3 className="group-hover:text-primary text-lg font-medium leading-tight line-clamp-3 mb-2">
                         {article.headline}
                       </h3>
