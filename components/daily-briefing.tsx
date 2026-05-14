@@ -49,6 +49,10 @@ export default function DailyBriefing() {
     );
   }
 
+  const cleanContent = (briefing.briefing_content || "")
+    .replace(/^```(?:html|markdown)?\s*/i, "")
+    .replace(/\s*```$/i, "");
+
   return (
     <div className="flex flex-col gap-6 p-4 md:pr-6 h-full">
       <h2 className="text-3xl font-light text-primary">Latest Briefing</h2>
@@ -58,11 +62,11 @@ export default function DailyBriefing() {
           <p className="text-sm font-medium text-primary/60">{format(briefingDate, "PPPP")}</p>
 
           <div className="prose prose-sm prose-primary max-w-none text-justify">
-            {/<\/?[a-z][\s\S]*>/i.test(briefing.briefing_content || "") ? (
-              <div dangerouslySetInnerHTML={{ __html: briefing.briefing_content || "" }} />
+            {/<\/?[a-z][\s\S]*>/i.test(cleanContent) ? (
+              <div dangerouslySetInnerHTML={{ __html: cleanContent }} />
             ) : (
               <ReactMarkdown>
-                {briefing.briefing_content || ""}
+                {cleanContent}
               </ReactMarkdown>
             )}
           </div>
