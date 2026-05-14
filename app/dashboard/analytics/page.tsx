@@ -19,7 +19,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import {TopEntityItem} from "@app/api-service.ts"
+import { TopEntityItem } from "@/app/api-service"
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_RAG_API_URL;
 
@@ -56,7 +56,7 @@ interface ReportState {
   data: ReportData | null;
   kpi: KPISummary | null;
   headlines: TopHeadline[];
-  tags: TopTag[];
+  tags: TopEntityItem[];
   sov: CompetitiveSOV[];
   loading: boolean;
   error: string | null;
@@ -453,7 +453,7 @@ export default function AnalyticsPage() {
                           </a>
                           <div className="flex items-center gap-3 text-xs text-muted-foreground">
                             <span className="font-semibold px-2 py-0.5 bg-accent rounded-md">{headline.outlet}</span>
-                            <span>Score: {formatNumber(Math.round(headline.score))}</span>
+                            {/* <span>Score: {formatNumber(Math.round(headline.score))}</span> */}
                           </div>
                         </div>
                       ))}
