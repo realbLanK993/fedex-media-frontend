@@ -15,14 +15,13 @@ export default function FedExNewsletterPage() {
       setIsLoading(true);
       try {
         const dateStr = format(briefingDate, "dd-MMM-yy").toUpperCase();
-        const res = await fetch(`${process.env.NEXT_PUBLIC_RAG_API_URL}/newsletter/by-date`, {
-          method: "POST",
+        const res = await fetch(`${process.env.NEXT_PUBLIC_RAG_API_URL}/newsletter/by-date?date=${dateStr}`, {
+          method: "GET",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ date: dateStr }),
         });
-        
+
         if (res.ok) {
           let html = await res.text();
           // Inject a base tag to ensure any relative paths resolve to the backend
@@ -46,7 +45,7 @@ export default function FedExNewsletterPage() {
         setIsLoading(false);
       }
     };
-    
+
     if (briefingDate) {
       fetchNewsletter();
     }
