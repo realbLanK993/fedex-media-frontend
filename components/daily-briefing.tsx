@@ -58,10 +58,13 @@ export default function DailyBriefing() {
           <p className="text-sm font-medium text-primary/60">{format(briefingDate, "PPPP")}</p>
 
           <div className="prose prose-sm prose-primary max-w-none text-justify">
-
-            <ReactMarkdown>
-              {briefing.briefing_content || ""}
-            </ReactMarkdown>
+            {/<\/?[a-z][\s\S]*>/i.test(briefing.briefing_content || "") ? (
+              <div dangerouslySetInnerHTML={{ __html: briefing.briefing_content || "" }} />
+            ) : (
+              <ReactMarkdown>
+                {briefing.briefing_content || ""}
+              </ReactMarkdown>
+            )}
           </div>
 
           {briefing.sources && briefing.sources.length > 0 && (

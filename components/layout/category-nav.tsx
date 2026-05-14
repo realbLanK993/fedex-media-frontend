@@ -26,7 +26,7 @@ export default function CategoryNav() {
           return (
             <Link
               href={`/dashboard/topics/${encodeURIComponent(cat.entity_text)}`}
-              key={index}
+              key={cat.entity_text + index}
               className={`text-sm font-semibold px-6 py-2 transition-colors inline-block ${isActive
                 ? "bg-[#5D1E89] text-white skew-x-[-10deg]"
                 : "text-primary hover:text-[#5D1E89]"
