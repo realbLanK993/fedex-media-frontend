@@ -117,7 +117,7 @@ const ClustersList = () => {
     <React.Fragment>
       <ScrollArea className="flex flex-1 h-[calc(100vh-333px)] pr-4">
         <div className="flex flex-col gap-4 w-full">
-          {filteredClusters.map((cluster) => (
+          {filteredClusters.sort((a, b) => b.article_count - a.article_count).map((cluster) => (
             <Link
               key={cluster.id}
               href={`/dashboard/clusters/${cluster.id}`}
